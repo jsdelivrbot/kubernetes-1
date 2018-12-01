@@ -1,0 +1,1577 @@
+<!DOCTYPE html>
+<!-- saved from url=(0123)file:///home/exceptdead/Downloads/Install%20and%20configure%20a%20multi-master%20Kubernetes%20cluster%20with%20kubeadm.html -->
+<html style="" class=" js flexbox flexboxlegacy canvas canvastext webgl no-touch geolocation postmessage websqldatabase indexeddb hashchange history draganddrop websockets rgba hsla multiplebgs backgroundsize borderimage borderradius boxshadow textshadow opacity cssanimations csscolumns cssgradients cssreflections csstransforms csstransforms3d csstransitions fontface generatedcontent video audio localstorage sessionstorage webworkers applicationcache svg inlinesvg smil svgclippaths js flexbox flexboxlegacy canvas canvastext webgl no-touch geolocation postmessage websqldatabase indexeddb hashchange history draganddrop websockets rgba hsla multiplebgs backgroundsize borderimage borderradius boxshadow textshadow opacity cssanimations csscolumns cssgradients cssreflections csstransforms csstransforms3d csstransitions fontface generatedcontent video audio localstorage sessionstorage webworkers applicationcache svg inlinesvg smil svgclippaths"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+
+    <title>Install and configure a multi-master Kubernetes cluster with kubeadm</title>
+    <meta name="description" content="">
+
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="shortcut icon" href="https://blog.inkubate.io/assets/favicon.ico">
+
+
+    <link rel="stylesheet" href="./Install and configure a multi-master Kubernetes cluster with kubeadm_files/font-awesome.min.css">
+    <link rel="stylesheet" href="./Install and configure a multi-master Kubernetes cluster with kubeadm_files/css">
+    <link rel="stylesheet" href="./Install and configure a multi-master Kubernetes cluster with kubeadm_files/css(1)">
+    <link rel="stylesheet" href="./Install and configure a multi-master Kubernetes cluster with kubeadm_files/github.css">
+    <link rel="stylesheet" href="./Install and configure a multi-master Kubernetes cluster with kubeadm_files/style.css">
+
+    <link rel="canonical" href="http://blog.inkubate.io/install-and-configure-a-multi-master-kubernetes-cluster-with-kubeadm/">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <link rel="amphtml" href="http://blog.inkubate.io/install-and-configure-a-multi-master-kubernetes-cluster-with-kubeadm/amp/">
+    
+    <meta property="og:site_name" content="Inkubate">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Install and configure a multi-master Kubernetes cluster with kubeadm">
+    <meta property="og:description" content="Kubeadm is a tool which is part of the Kubernetes project. It is designed to help with the deployment of Kubernetes. It is currently a work in progress and it has some limitations. One of these limitations is that it doesn&#39;t support multi-master (high availability) configuration. This tutorial will go">
+    <meta property="og:url" content="http://blog.inkubate.io/install-and-configure-a-multi-master-kubernetes-cluster-with-kubeadm/">
+    <meta property="og:image" content="http://blog.inkubate.io/content/images/2018/04/kubernets-logo.png">
+    <meta property="article:published_time" content="2018-04-22T09:43:51.000Z">
+    <meta property="article:modified_time" content="2018-10-18T07:44:20.000Z">
+    <meta property="article:tag" content="Cloud">
+    <meta property="article:tag" content="Kubernetes">
+    <meta property="article:tag" content="Container">
+    <meta property="article:tag" content="Kubeadm">
+    
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Install and configure a multi-master Kubernetes cluster with kubeadm">
+    <meta name="twitter:description" content="Kubeadm is a tool which is part of the Kubernetes project. It is designed to help with the deployment of Kubernetes. It is currently a work in progress and it has some limitations. One of these limitations is that it doesn&#39;t support multi-master (high availability) configuration. This tutorial will go">
+    <meta name="twitter:url" content="http://blog.inkubate.io/install-and-configure-a-multi-master-kubernetes-cluster-with-kubeadm/">
+    <meta name="twitter:image" content="http://blog.inkubate.io/content/images/2018/04/kubernets-logo.png">
+    <meta name="twitter:label1" content="Written by">
+    <meta name="twitter:data1" content="Simon Guyennet">
+    <meta name="twitter:label2" content="Filed under">
+    <meta name="twitter:data2" content="Cloud, Kubernetes, Container, Kubeadm">
+    
+    <script async="" src="./Install and configure a multi-master Kubernetes cluster with kubeadm_files/analytics.js"></script><script async="" src="./Install and configure a multi-master Kubernetes cluster with kubeadm_files/analytics(1).js"></script><script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "publisher": {
+        "@type": "Organization",
+        "name": "Inkubate",
+        "logo": "http://blog.inkubate.io/content/images/2017/09/logo.png"
+    },
+    "author": {
+        "@type": "Person",
+        "name": "Simon Guyennet",
+        "image": {
+            "@type": "ImageObject",
+            "url": "//www.gravatar.com/avatar/ece26467aaa052f1f8c46ee85e441488?s=250&d=mm&r=x",
+            "width": 250,
+            "height": 250
+        },
+        "url": "http://blog.inkubate.io/author/simon/",
+        "sameAs": []
+    },
+    "headline": "Install and configure a multi-master Kubernetes cluster with kubeadm",
+    "url": "https://blog.inkubate.io/install-and-configure-a-multi-master-kubernetes-cluster-with-kubeadm/",
+    "datePublished": "2018-04-22T09:43:51.000Z",
+    "dateModified": "2018-10-18T07:44:20.000Z",
+    "image": "http://blog.inkubate.io/content/images/2018/04/kubernets-logo.png",
+    "keywords": "Cloud, Kubernetes, Container, Kubeadm",
+    "description": "Kubeadm is a tool which is part of the Kubernetes project. It is designed to help with the deployment of Kubernetes. It is currently a work in progress and it has some limitations. One of these limitations is that it doesn&#x27;t support multi-master (high availability) configuration. This tutorial will go",
+    "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "http://blog.inkubate.io"
+    }
+}
+    </script>
+
+    <meta name="generator" content="Ghost 0.11">
+    <link rel="alternate" type="application/rss+xml" title="Inkubate" href="https://blog.inkubate.io/rss/">
+    <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-105963166-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+    <script src="./Install and configure a multi-master Kubernetes cluster with kubeadm_files/modernizr.js"></script>
+<script type="text/javascript" async="" src="./Install and configure a multi-master Kubernetes cluster with kubeadm_files/embed.js"></script><meta class="foundation-data-attribute-namespace"><meta class="foundation-mq-xxlarge"><meta class="foundation-mq-xlarge-only"><meta class="foundation-mq-xlarge"><meta class="foundation-mq-large-only"><meta class="foundation-mq-large"><meta class="foundation-mq-medium-only"><meta class="foundation-mq-medium"><meta class="foundation-mq-small-only"><meta class="foundation-mq-small"><style></style><meta class="foundation-mq-topbar"><link rel="preload" as="style" href="https://c.disquscdn.com/next/embed/styles/lounge.d49f53e192b9080ef8880a7c9b24f1c3.css"><link rel="preload" as="script" href="https://c.disquscdn.com/next/embed/common.bundle.18932c85febf9520158697cdc31f08ae.js"><link rel="preload" as="script" href="https://c.disquscdn.com/next/embed/lounge.bundle.53ce1bd42cd56ff599219e9d5c200428.js"><link rel="preload" as="script" href="https://disqus.com/next/config.js"><script src="./Install and configure a multi-master Kubernetes cluster with kubeadm_files/alfalfa.4a5fcca1fe50a757044dfd331b660625.js" async="" charset="UTF-8"></script><link rel="preload" as="style" href="https://c.disquscdn.com/next/embed/styles/lounge.d49f53e192b9080ef8880a7c9b24f1c3.css"><link rel="preload" as="script" href="https://c.disquscdn.com/next/embed/common.bundle.18932c85febf9520158697cdc31f08ae.js"><link rel="preload" as="script" href="https://c.disquscdn.com/next/embed/lounge.bundle.53ce1bd42cd56ff599219e9d5c200428.js"><link rel="preload" as="script" href="https://disqus.com/next/config.js"><script type="text/javascript" async="" src="file://blog-inkubate-io.disqus.com/embed.js"></script><style></style><meta class="foundation-mq-topbar"></head>
+<body class="post-template tag-cloud tag-kubernetes tag-container tag-kubeadm">
+
+    
+
+
+<div class="reading-time-indicator js-post-sticky-header">
+    <div class="post-reading-time js-post-reading-time">
+        <div class="percent js-percent-count">0%</div>
+        <progress class="read-progress-indicator single" max="38016" value="1148">
+            <div class="progress-container">
+                <span class="progress-bar"></span>
+            </div>
+        </progress>
+        <div class="read-estimation">
+            <div class="reading-time-blog-logo">
+                <a class="blog-logo" href="http://blog.inkubate.io/"><i class="fa fa fa-chevron-left"></i></a>
+            </div>
+            <div class="read-estimation-content">
+                <div class="title">Install and configure a multi-master Kubernetes cluster with kubeadm</div>
+                <div class="estimated-time">
+                    <span class="js-word-count">3698</span> words - <span class="eta">14 min</span> read.
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<nav class="main-nav">
+    <a href="http://blog.inkubate.io/" class="header-back-btn js-bg-check left">
+        <i class="fa fa-chevron-left"></i> Home
+    </a>
+        <i class="fa fa-bars js-bg-check js-main-menu-open right"></i>
+</nav>
+<header class="post-view-header js-blog-bg-image" style="background-image: no-cover">
+    <div class="post-header-content">
+        <h1 class="post-title js-bg-check">Install and configure a multi-master Kubernetes cluster with kubeadm</h1>
+        <section class="post-meta js-bg-check">
+            <time class="post-date" datetime="2018-04-22">22 April 2018</time>
+        </section>
+    </div>
+</header>
+
+<main class="post-view-content" role="main">
+
+    <article class="post tag-cloud tag-kubernetes tag-container tag-kubeadm">
+
+        <section class="post-content row">
+            <div class="small-12 columns"><p>Kubeadm is a tool which is part of the Kubernetes project. It is designed to help with the deployment of Kubernetes. It is currently a work in progress and it has some limitations. One of these limitations is that it doesn't support multi-master (high availability) configuration. This tutorial will go through the steps allowing to work around this limitation.</p>
+
+<p><img src="./Install and configure a multi-master Kubernetes cluster with kubeadm_files/kubernets-logo.png" alt="kubernetes logo"></p>
+
+<h1 id="prerequisites">Prerequisites</h1>
+
+<p>For this lab, we will use a standard Ubuntu 16.04 installation as a base image for the seven machines needed. The machines will all be configured on the same network, 10.10.40.0/24, and this network needs to have access to the Internet.</p>
+
+<p>The first machine needed is the machine on which the HAProxy load balancer will be installed. We will assign the IP 10.10.40.93 to this machine.</p>
+
+<p>We also need three Kubernetes master nodes. These machines will have the IPs 10.10.40.90, 10.10.40.91, and 10.10.40.92.</p>
+
+<p>Finally, we will also have three Kubernetes worker nodes with the IPs 10.10.40.100, 10.10.40.101, and 10.10.40.102.</p>
+
+<p>We also need an IP range for the pods. This range will be 10.30.0.0/16, but it is only internal to Kubernetes.</p>
+
+<p>I will use my Linux desktop as a client machine to generate all the necessary certificates, but also to manage the Kubernetes cluster. If you don't have a Linux desktop, you can use the HAProxy machine to do the same thing.</p>
+
+<h1 id="installingtheclienttools">Installing the client tools</h1>
+
+<p>We will need two tools on the client machine: the Cloud Flare SSL tool to generate the different certificates, and the Kubernetes client, kubectl, to manage the Kubernetes cluster.</p>
+
+<h2 id="installingcfssl">Installing cfssl</h2>
+
+<p>1- Download the binaries.</p>
+
+<p></p><pre><code class="hljs ruby"><span class="hljs-variable"><span class="hljs-variable">$ </span></span>wget <span class="hljs-symbol"><span class="hljs-symbol">https:</span></span>/<span class="hljs-regexp"><span class="hljs-regexp">/pkg.cfssl.org/</span></span><span class="hljs-constant"><span class="hljs-constant">R1</span></span>.<span class="hljs-number"><span class="hljs-number">2</span></span>/cfssl_linux-amd64</code></pre><p></p>
+
+<p></p><pre><code class="hljs ruby"><span class="hljs-variable"><span class="hljs-variable">$ </span></span>wget <span class="hljs-symbol"><span class="hljs-symbol">https:</span></span>/<span class="hljs-regexp"><span class="hljs-regexp">/pkg.cfssl.org/</span></span><span class="hljs-constant"><span class="hljs-constant">R1</span></span>.<span class="hljs-number"><span class="hljs-number">2</span></span>/cfssljson_linux-amd64</code></pre><p></p>
+
+<p>2- Add the execution permission to the binaries.</p>
+
+<p></p><pre><code class="hljs perl">$ <span class="hljs-keyword"><span class="hljs-keyword">chmod</span></span> +<span class="hljs-keyword"><span class="hljs-keyword">x</span></span> cfssl*</code></pre><p></p>
+
+<p>3- Move the binaries to /usr/local/bin.</p>
+
+<p></p><pre><code class="hljs bash">$ <span class="hljs-built_in"><span class="hljs-built_in">sudo</span></span> mv cfssl_linux-amd64 /usr/local/bin/cfssl</code></pre><p></p>
+
+<p></p><pre><code class="hljs bash">$ <span class="hljs-built_in"><span class="hljs-built_in">sudo</span></span> mv cfssljson_linux-amd64 /usr/local/bin/cfssljson</code></pre><p></p>
+
+<p>4- Verify the installation.</p>
+
+<p></p><pre><code class="hljs ruby"><span class="hljs-variable"><span class="hljs-variable">$ </span></span>cfssl version</code></pre><p></p>
+
+<h2 id="installingkubectl">Installing kubectl</h2>
+
+<p>1- Download the binary.</p>
+
+<p></p><pre><code class="hljs sql">$ wget <a class="vglnk" href="https://storage.googleapis.com/kubernetes-" rel="nofollow"><span>https</span><span>://</span><span>storage</span><span>.</span><span>googleapis</span><span>.</span><span>com</span><span>/</span><span>kubernetes</span><span>-</span></a><span class="hljs-operator"><span class="hljs-keyword"><span class="hljs-operator"><span class="hljs-keyword">release</span></span></span><span class="hljs-operator">/</span><span class="hljs-keyword"><span class="hljs-operator"><span class="hljs-keyword">release</span></span></span><span class="hljs-operator">/v1</span><span class="hljs-number"><span class="hljs-operator"><span class="hljs-number">.12</span></span></span><span class="hljs-number"><span class="hljs-operator"><span class="hljs-number">.1</span></span></span><span class="hljs-operator">/</span><span class="hljs-keyword"><span class="hljs-operator"><span class="hljs-keyword">bin</span></span></span><span class="hljs-operator">/linux/amd64/kubectl</span></span></code></pre><p></p>
+
+<p>2- Add the execution permission to the binary.</p>
+
+<p></p><pre><code class="hljs perl">$ <span class="hljs-keyword"><span class="hljs-keyword">chmod</span></span> +<span class="hljs-keyword"><span class="hljs-keyword">x</span></span> kubectl</code></pre><p></p>
+
+<p>3- Move the binary to /usr/local/bin.</p>
+
+<p></p><pre><code class="hljs bash">$ <span class="hljs-built_in"><span class="hljs-built_in">sudo</span></span> mv kubectl /usr/local/bin</code></pre><p></p>
+
+<p>4- Verify the installation.</p>
+
+<p></p><pre><code class="hljs ruby"><span class="hljs-variable"><span class="hljs-variable">$ </span></span>kubectl version</code></pre><p></p>
+
+<h1 id="installingthehaproxyloadbalancer">Installing the HAProxy load balancer</h1>
+
+<p>As we will deploy three Kubernetes master nodes, we need to deploy an HAPRoxy load balancer in front of them to distribute the traffic.</p>
+
+<p>1- SSH to the 10.10.40.93 Ubuntu machine.</p>
+
+<p>2- Update the machine.</p>
+
+<p></p><pre><code class="hljs bash">$ <span class="hljs-built_in"><span class="hljs-built_in">sudo</span></span> apt-get update</code></pre><p></p>
+
+<p></p><pre><code class="hljs bash">$ <span class="hljs-built_in"><span class="hljs-built_in">sudo</span></span> apt-get upgrade</code></pre><p></p>
+
+<p>3- Install HAProxy.</p>
+
+<p></p><pre><code class="hljs bash">$ <span class="hljs-built_in"><span class="hljs-built_in">sudo</span></span> apt-get install haproxy</code></pre><p></p>
+
+<p>4- Configure HAProxy to load balance the traffic between the three Kubernetes master nodes.</p>
+
+<p></p><pre><code class="hljs sql">$ sudo vim /etc/haproxy/haproxy.cfg
+global
+...
+default
+...
+frontend kubernetes
+bind 10.10.40.93:6443
+option tcplog
+mode tcp
+default_backend kubernetes-master-nodes<p></p>
+
+<p>backend kubernetes-master-nodes
+mode tcp
+balance roundrobin
+option tcp-<span class="hljs-operator"><span class="hljs-keyword"><span class="hljs-operator"><span class="hljs-keyword">check</span></span></span><span class="hljs-operator">
+</span><span class="hljs-keyword"><span class="hljs-operator"><span class="hljs-keyword">server</span></span></span><span class="hljs-operator"> k8s-</span><span class="hljs-keyword"><span class="hljs-operator"><span class="hljs-keyword">master</span></span></span><span class="hljs-operator">-</span><span class="hljs-number"><span class="hljs-operator"><span class="hljs-number">0</span></span></span><span class="hljs-operator"> </span><span class="hljs-number"><span class="hljs-operator"><span class="hljs-number">10.10</span></span></span><span class="hljs-number"><span class="hljs-operator"><span class="hljs-number">.40</span></span></span><span class="hljs-number"><span class="hljs-operator"><span class="hljs-number">.90</span></span></span><span class="hljs-operator">:</span><span class="hljs-number"><span class="hljs-operator"><span class="hljs-number">6443</span></span></span><span class="hljs-operator"> </span><span class="hljs-keyword"><span class="hljs-operator"><span class="hljs-keyword">check</span></span></span><span class="hljs-operator"> fall </span><span class="hljs-number"><span class="hljs-operator"><span class="hljs-number">3</span></span></span><span class="hljs-operator"> rise </span><span class="hljs-number"><span class="hljs-operator"><span class="hljs-number">2</span></span></span><span class="hljs-operator">
+</span><span class="hljs-keyword"><span class="hljs-operator"><span class="hljs-keyword">server</span></span></span><span class="hljs-operator"> k8s-</span><span class="hljs-keyword"><span class="hljs-operator"><span class="hljs-keyword">master</span></span></span><span class="hljs-operator">-</span><span class="hljs-number"><span class="hljs-operator"><span class="hljs-number">1</span></span></span><span class="hljs-operator"> </span><span class="hljs-number"><span class="hljs-operator"><span class="hljs-number">10.10</span></span></span><span class="hljs-number"><span class="hljs-operator"><span class="hljs-number">.40</span></span></span><span class="hljs-number"><span class="hljs-operator"><span class="hljs-number">.91</span></span></span><span class="hljs-operator">:</span><span class="hljs-number"><span class="hljs-operator"><span class="hljs-number">6443</span></span></span><span class="hljs-operator"> </span><span class="hljs-keyword"><span class="hljs-operator"><span class="hljs-keyword">check</span></span></span><span class="hljs-operator"> fall </span><span class="hljs-number"><span class="hljs-operator"><span class="hljs-number">3</span></span></span><span class="hljs-operator"> rise </span><span class="hljs-number"><span class="hljs-operator"><span class="hljs-number">2</span></span></span><span class="hljs-operator">
+</span><span class="hljs-keyword"><span class="hljs-operator"><span class="hljs-keyword">server</span></span></span><span class="hljs-operator"> k8s-</span><span class="hljs-keyword"><span class="hljs-operator"><span class="hljs-keyword">master</span></span></span><span class="hljs-operator">-</span><span class="hljs-number"><span class="hljs-operator"><span class="hljs-number">2</span></span></span><span class="hljs-operator"> </span><span class="hljs-number"><span class="hljs-operator"><span class="hljs-number">10.10</span></span></span><span class="hljs-number"><span class="hljs-operator"><span class="hljs-number">.40</span></span></span><span class="hljs-number"><span class="hljs-operator"><span class="hljs-number">.92</span></span></span><span class="hljs-operator">:</span><span class="hljs-number"><span class="hljs-operator"><span class="hljs-number">6443</span></span></span><span class="hljs-operator"> </span><span class="hljs-keyword"><span class="hljs-operator"><span class="hljs-keyword">check</span></span></span><span class="hljs-operator"> fall </span><span class="hljs-number"><span class="hljs-operator"><span class="hljs-number">3</span></span></span><span class="hljs-operator"> rise </span><span class="hljs-number"><span class="hljs-operator"><span class="hljs-number">2</span></span></span><span class="hljs-operator">
+</span></span></p></code></pre><p></p>
+
+<p>5- Restart HAProxy.</p>
+
+<p></p><pre><code class="hljs bash">$ <span class="hljs-built_in"><span class="hljs-built_in">sudo</span></span> systemctl restart haproxy</code></pre><p></p>
+
+<h1 id="generatingthetlscertificates">Generating the TLS certificates</h1>
+
+<p>These steps can be done on your Linux desktop if you have one or on the HAProxy machine depending on where you installed the cfssl tool.</p>
+
+<h2 id="creatingacertificateauthority">Creating a certificate authority</h2>
+
+<p>1- Create the certificate authority configuration file.</p>
+
+<p></p><pre><code class="hljs ruby"><span class="hljs-variable"><span class="hljs-variable">$ </span></span>vim ca-config.json
+{
+  <span class="hljs-string"><span class="hljs-string">"signing"</span></span><span class="hljs-symbol"><span class="hljs-symbol">:</span></span> {
+    <span class="hljs-string"><span class="hljs-string">"default"</span></span><span class="hljs-symbol"><span class="hljs-symbol">:</span></span> {
+      <span class="hljs-string"><span class="hljs-string">"expiry"</span></span><span class="hljs-symbol"><span class="hljs-symbol">:</span></span> <span class="hljs-string"><span class="hljs-string">"8760h"</span></span>
+    },
+    <span class="hljs-string"><span class="hljs-string">"profiles"</span></span><span class="hljs-symbol"><span class="hljs-symbol">:</span></span> {
+      <span class="hljs-string"><span class="hljs-string">"kubernetes"</span></span><span class="hljs-symbol"><span class="hljs-symbol">:</span></span> {
+        <span class="hljs-string"><span class="hljs-string">"usages"</span></span><span class="hljs-symbol"><span class="hljs-symbol">:</span></span> [<span class="hljs-string"><span class="hljs-string">"signing"</span></span>, <span class="hljs-string"><span class="hljs-string">"key encipherment"</span></span>, <span class="hljs-string"><span class="hljs-string">"server auth"</span></span>, <span class="hljs-string"><span class="hljs-string">"client auth"</span></span>],
+        <span class="hljs-string"><span class="hljs-string">"expiry"</span></span><span class="hljs-symbol"><span class="hljs-symbol">:</span></span> <span class="hljs-string"><span class="hljs-string">"8760h"</span></span>
+      }
+    }
+  }
+}</code></pre><p></p>
+
+<p>2- Create the certificate authority signing request configuration file.</p>
+
+<p></p><pre><code class="hljs ruby"><span class="hljs-variable"><span class="hljs-variable">$ </span></span>vim ca-csr.json
+{
+  <span class="hljs-string"><span class="hljs-string">"CN"</span></span><span class="hljs-symbol"><span class="hljs-symbol">:</span></span> <span class="hljs-string"><span class="hljs-string">"Kubernetes"</span></span>,
+  <span class="hljs-string"><span class="hljs-string">"key"</span></span><span class="hljs-symbol"><span class="hljs-symbol">:</span></span> {
+    <span class="hljs-string"><span class="hljs-string">"algo"</span></span><span class="hljs-symbol"><span class="hljs-symbol">:</span></span> <span class="hljs-string"><span class="hljs-string">"rsa"</span></span>,
+    <span class="hljs-string"><span class="hljs-string">"size"</span></span><span class="hljs-symbol"><span class="hljs-symbol">:</span></span> <span class="hljs-number"><span class="hljs-number">2048</span></span>
+  },
+  <span class="hljs-string"><span class="hljs-string">"names"</span></span><span class="hljs-symbol"><span class="hljs-symbol">:</span></span> [
+  {
+    <span class="hljs-string"><span class="hljs-string">"C"</span></span><span class="hljs-symbol"><span class="hljs-symbol">:</span></span> <span class="hljs-string"><span class="hljs-string">"IE"</span></span>,
+    <span class="hljs-string"><span class="hljs-string">"L"</span></span><span class="hljs-symbol"><span class="hljs-symbol">:</span></span> <span class="hljs-string"><span class="hljs-string">"Cork"</span></span>,
+    <span class="hljs-string"><span class="hljs-string">"O"</span></span><span class="hljs-symbol"><span class="hljs-symbol">:</span></span> <span class="hljs-string"><span class="hljs-string">"Kubernetes"</span></span>,
+    <span class="hljs-string"><span class="hljs-string">"OU"</span></span><span class="hljs-symbol"><span class="hljs-symbol">:</span></span> <span class="hljs-string"><span class="hljs-string">"CA"</span></span>,
+    <span class="hljs-string"><span class="hljs-string">"ST"</span></span><span class="hljs-symbol"><span class="hljs-symbol">:</span></span> <span class="hljs-string"><span class="hljs-string">"Cork Co."</span></span>
+  }
+ ]
+}</code></pre><p></p>
+
+<p>3- Generate the certificate authority certificate and private key.</p>
+
+<p></p><pre><code class="hljs ruby"><span class="hljs-variable"><span class="hljs-variable">$ </span></span>cfssl gencert -initca ca-csr.json | cfssljson -bare ca</code></pre><p></p>
+
+<p>4- Verify that the ca-key.pem and the ca.pem were generated.</p>
+
+<p></p><pre><code class="hljs ruby"><span class="hljs-variable"><span class="hljs-variable">$ </span></span>ls -la</code></pre><p></p>
+
+<h2 id="creatingthecertificatefortheetcdcluster">Creating the certificate for the Etcd cluster</h2>
+
+<p>1- Create the certificate signing request configuration file.</p>
+
+<p></p><pre><code class="hljs ruby"><span class="hljs-variable"><span class="hljs-variable">$ </span></span>vim kubernetes-csr.json
+{
+  <span class="hljs-string"><span class="hljs-string">"CN"</span></span><span class="hljs-symbol"><span class="hljs-symbol">:</span></span> <span class="hljs-string"><span class="hljs-string">"kubernetes"</span></span>,
+  <span class="hljs-string"><span class="hljs-string">"key"</span></span><span class="hljs-symbol"><span class="hljs-symbol">:</span></span> {
+    <span class="hljs-string"><span class="hljs-string">"algo"</span></span><span class="hljs-symbol"><span class="hljs-symbol">:</span></span> <span class="hljs-string"><span class="hljs-string">"rsa"</span></span>,
+    <span class="hljs-string"><span class="hljs-string">"size"</span></span><span class="hljs-symbol"><span class="hljs-symbol">:</span></span> <span class="hljs-number"><span class="hljs-number">2048</span></span>
+  },
+  <span class="hljs-string"><span class="hljs-string">"names"</span></span><span class="hljs-symbol"><span class="hljs-symbol">:</span></span> [
+  {
+    <span class="hljs-string"><span class="hljs-string">"C"</span></span><span class="hljs-symbol"><span class="hljs-symbol">:</span></span> <span class="hljs-string"><span class="hljs-string">"IE"</span></span>,
+    <span class="hljs-string"><span class="hljs-string">"L"</span></span><span class="hljs-symbol"><span class="hljs-symbol">:</span></span> <span class="hljs-string"><span class="hljs-string">"Cork"</span></span>,
+    <span class="hljs-string"><span class="hljs-string">"O"</span></span><span class="hljs-symbol"><span class="hljs-symbol">:</span></span> <span class="hljs-string"><span class="hljs-string">"Kubernetes"</span></span>,
+    <span class="hljs-string"><span class="hljs-string">"OU"</span></span><span class="hljs-symbol"><span class="hljs-symbol">:</span></span> <span class="hljs-string"><span class="hljs-string">"Kubernetes"</span></span>,
+    <span class="hljs-string"><span class="hljs-string">"ST"</span></span><span class="hljs-symbol"><span class="hljs-symbol">:</span></span> <span class="hljs-string"><span class="hljs-string">"Cork Co."</span></span>
+  }
+ ]
+}</code></pre><p></p>
+
+<p>2- Generate the certificate and private key.</p>
+
+<p></p><pre><code class="hljs diff">$ cfssl gencert \
+<span class="hljs-deletion"><span class="hljs-deletion">-ca=ca.pem \</span></span>
+<span class="hljs-deletion"><span class="hljs-deletion">-ca-key=ca-key.pem \</span></span>
+<span class="hljs-deletion"><span class="hljs-deletion">-config=ca-config.json \</span></span>
+<span class="hljs-deletion"><span class="hljs-deletion">-hostname=10.10.40.90,10.10.40.91,10.10.40.92,10.10.40.93,127.0.0.1,kubernetes.default \</span></span>
+<span class="hljs-deletion"><span class="hljs-deletion">-profile=kubernetes kubernetes-csr.json | \</span></span>
+cfssljson -bare kubernetes</code></pre><p></p>
+
+<p>3- Verify that the kubernetes-key.pem and the kubernetes.pem file were generated.</p>
+
+<p></p><pre><code class="hljs ruby"><span class="hljs-variable"><span class="hljs-variable">$ </span></span>ls -la</code></pre><p></p>
+
+<p>4- Copy the certificate to each nodes.</p>
+
+<p></p><pre><code class="hljs ruby"><span class="hljs-variable"><span class="hljs-variable">$ </span></span>scp ca.pem kubernetes.pem kubernetes-key.pem sguyennet<span class="hljs-variable"><span class="hljs-variable">@10</span></span>.<span class="hljs-number"><span class="hljs-number">10.40</span></span>.<span class="hljs-number"><span class="hljs-number">90</span></span><span class="hljs-symbol"><span class="hljs-symbol">:~</span></span>
+<span class="hljs-variable"><span class="hljs-variable">$ </span></span>scp ca.pem kubernetes.pem kubernetes-key.pem sguyennet<span class="hljs-variable"><span class="hljs-variable">@10</span></span>.<span class="hljs-number"><span class="hljs-number">10.40</span></span>.<span class="hljs-number"><span class="hljs-number">91</span></span><span class="hljs-symbol"><span class="hljs-symbol">:~</span></span>
+<span class="hljs-variable"><span class="hljs-variable">$ </span></span>scp ca.pem kubernetes.pem kubernetes-key.pem sguyennet<span class="hljs-variable"><span class="hljs-variable">@10</span></span>.<span class="hljs-number"><span class="hljs-number">10.40</span></span>.<span class="hljs-number"><span class="hljs-number">92</span></span><span class="hljs-symbol"><span class="hljs-symbol">:~</span></span>
+<span class="hljs-variable"><span class="hljs-variable">$ </span></span>scp ca.pem kubernetes.pem kubernetes-key.pem sguyennet<span class="hljs-variable"><span class="hljs-variable">@10</span></span>.<span class="hljs-number"><span class="hljs-number">10.40</span></span>.<span class="hljs-number"><span class="hljs-number">100</span></span><span class="hljs-symbol"><span class="hljs-symbol">:~</span></span>
+<span class="hljs-variable"><span class="hljs-variable">$ </span></span>scp ca.pem kubernetes.pem kubernetes-key.pem sguyennet<span class="hljs-variable"><span class="hljs-variable">@10</span></span>.<span class="hljs-number"><span class="hljs-number">10.40</span></span>.<span class="hljs-number"><span class="hljs-number">101</span></span><span class="hljs-symbol"><span class="hljs-symbol">:~</span></span>
+<span class="hljs-variable"><span class="hljs-variable">$ </span></span>scp ca.pem kubernetes.pem kubernetes-key.pem sguyennet<span class="hljs-variable"><span class="hljs-variable">@10</span></span>.<span class="hljs-number"><span class="hljs-number">10.40</span></span>.<span class="hljs-number"><span class="hljs-number">102</span></span><span class="hljs-symbol"><span class="hljs-symbol">:~</span></span>
+</code></pre><p></p>
+
+<h1 id="preparingthenodesforkubeadm">Preparing the nodes for kubeadm</h1>
+
+<h2 id="preparingthe10104090machine">Preparing the 10.10.40.90 machine</h2>
+
+<h3 id="installingdocker">Installing Docker</h3>
+
+<p>1- SSH to the 10.10.40.90 machine.</p>
+
+<p></p><pre><code class="hljs ruby"><span class="hljs-variable"><span class="hljs-variable">$ </span></span>ssh sguyennet<span class="hljs-variable"><span class="hljs-variable">@10</span></span>.<span class="hljs-number"><span class="hljs-number">10.40</span></span>.<span class="hljs-number"><span class="hljs-number">90</span></span></code></pre><p></p>
+
+<p>2- Get administrator privileges.</p>
+
+<p></p><pre><code class="hljs bash">$ <span class="hljs-built_in"><span class="hljs-built_in">sudo</span></span> <span class="hljs-operator"><span class="hljs-operator">-s</span></span></code></pre><p></p>
+
+<p>3- Add the Docker repository key.</p>
+
+<p></p><pre><code class="hljs cpp"><span class="hljs-preprocessor"><span class="hljs-preprocessor"># curl -fsSL https:</span><span class="hljs-comment"><span class="hljs-preprocessor"><span class="hljs-comment">//</span></span><a class="vglnk" href="http://download.docker.com/linux/ubuntu/gpg" rel="nofollow"><span><span class="hljs-preprocessor"><span class="hljs-comment">download</span></span></span><span><span class="hljs-preprocessor"><span class="hljs-comment">.</span></span></span><span><span class="hljs-preprocessor"><span class="hljs-comment">docker</span></span></span><span><span class="hljs-preprocessor"><span class="hljs-comment">.</span></span></span><span><span class="hljs-preprocessor"><span class="hljs-comment">com</span></span></span><span><span class="hljs-preprocessor"><span class="hljs-comment">/</span></span></span><span><span class="hljs-preprocessor"><span class="hljs-comment">linux</span></span></span><span><span class="hljs-preprocessor"><span class="hljs-comment">/</span></span></span><span><span class="hljs-preprocessor"><span class="hljs-comment">ubuntu</span></span></span><span><span class="hljs-preprocessor"><span class="hljs-comment">/</span></span></span><span><span class="hljs-preprocessor"><span class="hljs-comment">gpg</span></span></span></a><span class="hljs-preprocessor"><span class="hljs-comment"> | apt-key add -</span></span></span></span></code></pre><p></p>
+
+<p>4- Add the Docker repository.</p>
+
+<p></p><pre><code class="hljs bash"><span class="hljs-comment"><span class="hljs-comment"># add-apt-repository \</span></span>
+<span class="hljs-string"><span class="hljs-string">"deb </span><a class="vglnk" href="https://download.docker.com/linux/" rel="nofollow"><span><span class="hljs-string">https</span></span><span><span class="hljs-string">://</span></span><span><span class="hljs-string">download</span></span><span><span class="hljs-string">.</span></span><span><span class="hljs-string">docker</span></span><span><span class="hljs-string">.</span></span><span><span class="hljs-string">com</span></span><span><span class="hljs-string">/</span></span><span><span class="hljs-string">linux</span></span><span><span class="hljs-string">/</span></span></a><span class="hljs-variable"><span class="hljs-string"><span class="hljs-variable">$(. /etc/os-release; echo "$ID")</span></span></span><span class="hljs-string"> \
+</span><span class="hljs-variable"><span class="hljs-string"><span class="hljs-variable">$(lsb_release -cs)</span></span></span><span class="hljs-string"> \
+stable"</span></span></code></pre><p></p>
+
+<p>5- Update the list of packages.</p>
+
+<p></p><pre><code class="hljs apache"><span class="hljs-comment"><span class="hljs-comment"># apt-get update</span></span></code></pre><p></p>
+
+<p>6- Install Docker 17.03.</p>
+
+<p></p><pre><code class="hljs sql"># apt-get <span class="hljs-operator"><span class="hljs-keyword"><span class="hljs-operator"><span class="hljs-keyword">install</span></span></span><span class="hljs-operator"> -y docker-ce=$(apt-</span><span class="hljs-keyword"><span class="hljs-operator"><span class="hljs-keyword">cache</span></span></span><span class="hljs-operator"> madison docker-ce | grep </span><span class="hljs-number"><span class="hljs-operator"><span class="hljs-number">17.03</span></span></span><span class="hljs-operator"> | head -</span><span class="hljs-number"><span class="hljs-operator"><span class="hljs-number">1</span></span></span><span class="hljs-operator"> | awk </span><span class="hljs-string"><span class="hljs-operator"><span class="hljs-string">'{print $3}'</span></span></span><span class="hljs-operator">)</span></span></code></pre><p></p>
+
+<h3 id="installingkubeadmkubletandkubectl">Installing kubeadm, kublet, and kubectl</h3>
+
+<p>1- Add the Google repository key.</p>
+
+<p></p><pre><code class="hljs cpp"><span class="hljs-preprocessor"><span class="hljs-preprocessor"># curl -s https:</span><span class="hljs-comment"><span class="hljs-preprocessor"><span class="hljs-comment">//</span></span><a class="vglnk" href="http://packages.cloud.google.com/apt/doc/apt-key.gpg" rel="nofollow"><span><span class="hljs-preprocessor"><span class="hljs-comment">packages</span></span></span><span><span class="hljs-preprocessor"><span class="hljs-comment">.</span></span></span><span><span class="hljs-preprocessor"><span class="hljs-comment">cloud</span></span></span><span><span class="hljs-preprocessor"><span class="hljs-comment">.</span></span></span><span><span class="hljs-preprocessor"><span class="hljs-comment">google</span></span></span><span><span class="hljs-preprocessor"><span class="hljs-comment">.</span></span></span><span><span class="hljs-preprocessor"><span class="hljs-comment">com</span></span></span><span><span class="hljs-preprocessor"><span class="hljs-comment">/</span></span></span><span><span class="hljs-preprocessor"><span class="hljs-comment">apt</span></span></span><span><span class="hljs-preprocessor"><span class="hljs-comment">/</span></span></span><span><span class="hljs-preprocessor"><span class="hljs-comment">doc</span></span></span><span><span class="hljs-preprocessor"><span class="hljs-comment">/</span></span></span><span><span class="hljs-preprocessor"><span class="hljs-comment">apt</span></span></span><span><span class="hljs-preprocessor"><span class="hljs-comment">-</span></span></span><span><span class="hljs-preprocessor"><span class="hljs-comment">key</span></span></span><span><span class="hljs-preprocessor"><span class="hljs-comment">.</span></span></span><span><span class="hljs-preprocessor"><span class="hljs-comment">gpg</span></span></span></a><span class="hljs-preprocessor"><span class="hljs-comment"> | apt-key add -</span></span></span></span></code></pre><p></p>
+
+<p>2- Add the Google repository.</p>
+
+<p></p><pre><code class="hljs nginx"><span class="hljs-comment"><span class="hljs-comment"># vim /etc/apt/sources.list.d/kubernetes.list</span></span>
+<span class="hljs-title"><span class="hljs-title">deb</span></span> <span class="hljs-url"><a class="vglnk" href="http://apt.kubernetes.io/" rel="nofollow"><span><span class="hljs-url">http</span></span><span><span class="hljs-url">://</span></span><span><span class="hljs-url">apt</span></span><span><span class="hljs-url">.</span></span><span><span class="hljs-url">kubernetes</span></span><span><span class="hljs-url">.</span></span><span><span class="hljs-url">io</span></span></a></span> kubernetes-xenial main
+</code></pre><p></p>
+
+<p>3- Update the list of packages.</p>
+
+<p></p><pre><code class="hljs apache"><span class="hljs-comment"><span class="hljs-comment"># apt-get update</span></span></code></pre><p></p>
+
+<p>4- Install kubelet, kubeadm and kubectl.</p>
+
+<p></p><pre><code class="hljs apache"><span class="hljs-comment"><span class="hljs-comment"># apt-get install kubelet kubeadm kubectl</span></span></code></pre><p></p>
+
+<p>5- Disable the swap.</p>
+
+<p></p><pre><code class="hljs apache"><span class="hljs-comment"><span class="hljs-comment"># swapoff -a</span></span></code></pre><p></p>
+
+<p></p><pre><code class="hljs apache"><span class="hljs-comment"><span class="hljs-comment"># sed -i '/ swap / s/^/#/' /etc/fstab</span></span></code></pre><p></p>
+
+<h2 id="preparingthe10104091machine">Preparing the 10.10.40.91 machine</h2>
+
+<h3 id="installingdocker">Installing Docker</h3>
+
+<p>1- SSH to the 10.10.40.91 machine.</p>
+
+<p></p><pre><code class="hljs ruby"><span class="hljs-variable"><span class="hljs-variable">$ </span></span>ssh sguyennet<span class="hljs-variable"><span class="hljs-variable">@10</span></span>.<span class="hljs-number"><span class="hljs-number">10.40</span></span>.<span class="hljs-number"><span class="hljs-number">91</span></span></code></pre><p></p>
+
+<p>2- Get administrator privileges.</p>
+
+<p></p><pre><code class="hljs bash">$ <span class="hljs-built_in"><span class="hljs-built_in">sudo</span></span> <span class="hljs-operator"><span class="hljs-operator">-s</span></span></code></pre><p></p>
+
+<p>3- Add the Docker repository key.</p>
+
+<p></p><pre><code class="hljs cpp"><span class="hljs-preprocessor"><span class="hljs-preprocessor"># curl -fsSL https:</span><span class="hljs-comment"><span class="hljs-preprocessor"><span class="hljs-comment">//</span></span><a class="vglnk" href="http://download.docker.com/linux/ubuntu/gpg" rel="nofollow"><span><span class="hljs-preprocessor"><span class="hljs-comment">download</span></span></span><span><span class="hljs-preprocessor"><span class="hljs-comment">.</span></span></span><span><span class="hljs-preprocessor"><span class="hljs-comment">docker</span></span></span><span><span class="hljs-preprocessor"><span class="hljs-comment">.</span></span></span><span><span class="hljs-preprocessor"><span class="hljs-comment">com</span></span></span><span><span class="hljs-preprocessor"><span class="hljs-comment">/</span></span></span><span><span class="hljs-preprocessor"><span class="hljs-comment">linux</span></span></span><span><span class="hljs-preprocessor"><span class="hljs-comment">/</span></span></span><span><span class="hljs-preprocessor"><span class="hljs-comment">ubuntu</span></span></span><span><span class="hljs-preprocessor"><span class="hljs-comment">/</span></span></span><span><span class="hljs-preprocessor"><span class="hljs-comment">gpg</span></span></span></a><span class="hljs-preprocessor"><span class="hljs-comment"> | apt-key add -</span></span></span></span></code></pre><p></p>
+
+<p>4- Add the Docker repository.</p>
+
+<p></p><pre><code class="hljs bash"><span class="hljs-comment"><span class="hljs-comment"># add-apt-repository \</span></span>
+<span class="hljs-string"><span class="hljs-string">"deb </span><a class="vglnk" href="https://download.docker.com/linux/" rel="nofollow"><span><span class="hljs-string">https</span></span><span><span class="hljs-string">://</span></span><span><span class="hljs-string">download</span></span><span><span class="hljs-string">.</span></span><span><span class="hljs-string">docker</span></span><span><span class="hljs-string">.</span></span><span><span class="hljs-string">com</span></span><span><span class="hljs-string">/</span></span><span><span class="hljs-string">linux</span></span><span><span class="hljs-string">/</span></span></a><span class="hljs-variable"><span class="hljs-string"><span class="hljs-variable">$(. /etc/os-release; echo "$ID")</span></span></span><span class="hljs-string"> \
+</span><span class="hljs-variable"><span class="hljs-string"><span class="hljs-variable">$(lsb_release -cs)</span></span></span><span class="hljs-string"> \
+stable"</span></span></code></pre><p></p>
+
+<p>5- Update the list of packages.</p>
+
+<p></p><pre><code class="hljs apache"><span class="hljs-comment"><span class="hljs-comment"># apt-get update</span></span></code></pre><p></p>
+
+<p>6- Install Docker 17.03.</p>
+
+<p></p><pre><code class="hljs sql"># apt-get <span class="hljs-operator"><span class="hljs-keyword"><span class="hljs-operator"><span class="hljs-keyword">install</span></span></span><span class="hljs-operator"> -y docker-ce=$(apt-</span><span class="hljs-keyword"><span class="hljs-operator"><span class="hljs-keyword">cache</span></span></span><span class="hljs-operator"> madison docker-ce | grep </span><span class="hljs-number"><span class="hljs-operator"><span class="hljs-number">17.03</span></span></span><span class="hljs-operator"> | head -</span><span class="hljs-number"><span class="hljs-operator"><span class="hljs-number">1</span></span></span><span class="hljs-operator"> | awk </span><span class="hljs-string"><span class="hljs-operator"><span class="hljs-string">'{print $3}'</span></span></span><span class="hljs-operator">)</span></span></code></pre><p></p>
+
+<h3 id="installingkubeadmkubletandkubectl">Installing kubeadm, kublet, and kubectl</h3>
+
+<p>1- Add the Google repository key.</p>
+
+<p></p><pre><code class="hljs cpp"><span class="hljs-preprocessor"><span class="hljs-preprocessor"># curl -s https:</span><span class="hljs-comment"><span class="hljs-preprocessor"><span class="hljs-comment">//</span></span><a class="vglnk" href="http://packages.cloud.google.com/apt/doc/apt-key.gpg" rel="nofollow"><span><span class="hljs-preprocessor"><span class="hljs-comment">packages</span></span></span><span><span class="hljs-preprocessor"><span class="hljs-comment">.</span></span></span><span><span class="hljs-preprocessor"><span class="hljs-comment">cloud</span></span></span><span><span class="hljs-preprocessor"><span class="hljs-comment">.</span></span></span><span><span class="hljs-preprocessor"><span class="hljs-comment">google</span></span></span><span><span class="hljs-preprocessor"><span class="hljs-comment">.</span></span></span><span><span class="hljs-preprocessor"><span class="hljs-comment">com</span></span></span><span><span class="hljs-preprocessor"><span class="hljs-comment">/</span></span></span><span><span class="hljs-preprocessor"><span class="hljs-comment">apt</span></span></span><span><span class="hljs-preprocessor"><span class="hljs-comment">/</span></span></span><span><span class="hljs-preprocessor"><span class="hljs-comment">doc</span></span></span><span><span class="hljs-preprocessor"><span class="hljs-comment">/</span></span></span><span><span class="hljs-preprocessor"><span class="hljs-comment">apt</span></span></span><span><span class="hljs-preprocessor"><span class="hljs-comment">-</span></span></span><span><span class="hljs-preprocessor"><span class="hljs-comment">key</span></span></span><span><span class="hljs-preprocessor"><span class="hljs-comment">.</span></span></span><span><span class="hljs-preprocessor"><span class="hljs-comment">gpg</span></span></span></a><span class="hljs-preprocessor"><span class="hljs-comment"> | apt-key add -</span></span></span></span></code></pre><p></p>
+
+<p>2- Add the Google repository.</p>
+
+<p></p><pre><code class="hljs nginx"><span class="hljs-comment"><span class="hljs-comment"># vim /etc/apt/sources.list.d/kubernetes.list</span></span>
+<span class="hljs-title"><span class="hljs-title">deb</span></span> <span class="hljs-url"><a class="vglnk" href="http://apt.kubernetes.io/" rel="nofollow"><span><span class="hljs-url">http</span></span><span><span class="hljs-url">://</span></span><span><span class="hljs-url">apt</span></span><span><span class="hljs-url">.</span></span><span><span class="hljs-url">kubernetes</span></span><span><span class="hljs-url">.</span></span><span><span class="hljs-url">io</span></span></a></span> kubernetes-xenial main
+</code></pre><p></p>
+
+<p>3- Update the list of packages.</p>
+
+<p></p><pre><code class="hljs apache"><span class="hljs-comment"><span class="hljs-comment"># apt-get update</span></span></code></pre><p></p>
+
+<p>4- Install kubelet, kubeadm and kubectl.</p>
+
+<p></p><pre><code class="hljs apache"><span class="hljs-comment"><span class="hljs-comment"># apt-get install kubelet kubeadm kubectl</span></span></code></pre><p></p>
+
+<p>5- Disable the swap.</p>
+
+<p></p><pre><code class="hljs apache"><span class="hljs-comment"><span class="hljs-comment"># swapoff -a</span></span></code></pre><p></p>
+
+<p></p><pre><code class="hljs apache"><span class="hljs-comment"><span class="hljs-comment"># sed -i '/ swap / s/^/#/' /etc/fstab</span></span></code></pre><p></p>
+
+<h2 id="preparingthe10104092machine">Preparing the 10.10.40.92 machine</h2>
+
+<h3 id="installingdocker">Installing Docker</h3>
+
+<p>1- SSH to the 10.10.40.92 machine.</p>
+
+<p></p><pre><code class="hljs ruby"><span class="hljs-variable"><span class="hljs-variable">$ </span></span>ssh sguyennet<span class="hljs-variable"><span class="hljs-variable">@10</span></span>.<span class="hljs-number"><span class="hljs-number">10.40</span></span>.<span class="hljs-number"><span class="hljs-number">92</span></span></code></pre><p></p>
+
+<p>2- Get administrator privileges.</p>
+
+<p></p><pre><code class="hljs bash">$ <span class="hljs-built_in"><span class="hljs-built_in">sudo</span></span> <span class="hljs-operator"><span class="hljs-operator">-s</span></span></code></pre><p></p>
+
+<p>3- Add the Docker repository key.</p>
+
+<p></p><pre><code class="hljs cpp"><span class="hljs-preprocessor"><span class="hljs-preprocessor"># curl -fsSL https:</span><span class="hljs-comment"><span class="hljs-preprocessor"><span class="hljs-comment">//</span></span><a class="vglnk" href="http://download.docker.com/linux/ubuntu/gpg" rel="nofollow"><span><span class="hljs-preprocessor"><span class="hljs-comment">download</span></span></span><span><span class="hljs-preprocessor"><span class="hljs-comment">.</span></span></span><span><span class="hljs-preprocessor"><span class="hljs-comment">docker</span></span></span><span><span class="hljs-preprocessor"><span class="hljs-comment">.</span></span></span><span><span class="hljs-preprocessor"><span class="hljs-comment">com</span></span></span><span><span class="hljs-preprocessor"><span class="hljs-comment">/</span></span></span><span><span class="hljs-preprocessor"><span class="hljs-comment">linux</span></span></span><span><span class="hljs-preprocessor"><span class="hljs-comment">/</span></span></span><span><span class="hljs-preprocessor"><span class="hljs-comment">ubuntu</span></span></span><span><span class="hljs-preprocessor"><span class="hljs-comment">/</span></span></span><span><span class="hljs-preprocessor"><span class="hljs-comment">gpg</span></span></span></a><span class="hljs-preprocessor"><span class="hljs-comment"> | apt-key add -</span></span></span></span></code></pre><p></p>
+
+<p>4- Add the Docker repository.</p>
+
+<p></p><pre><code class="hljs bash"><span class="hljs-comment"><span class="hljs-comment"># add-apt-repository \</span></span>
+<span class="hljs-string"><span class="hljs-string">"deb </span><a class="vglnk" href="https://download.docker.com/linux/" rel="nofollow"><span><span class="hljs-string">https</span></span><span><span class="hljs-string">://</span></span><span><span class="hljs-string">download</span></span><span><span class="hljs-string">.</span></span><span><span class="hljs-string">docker</span></span><span><span class="hljs-string">.</span></span><span><span class="hljs-string">com</span></span><span><span class="hljs-string">/</span></span><span><span class="hljs-string">linux</span></span><span><span class="hljs-string">/</span></span></a><span class="hljs-variable"><span class="hljs-string"><span class="hljs-variable">$(. /etc/os-release; echo "$ID")</span></span></span><span class="hljs-string"> \
+</span><span class="hljs-variable"><span class="hljs-string"><span class="hljs-variable">$(lsb_release -cs)</span></span></span><span class="hljs-string"> \
+stable"</span></span></code></pre><p></p>
+
+<p>5- Update the list of packages.</p>
+
+<p></p><pre><code class="hljs apache"><span class="hljs-comment"><span class="hljs-comment"># apt-get update</span></span></code></pre><p></p>
+
+<p>6- Install Docker 17.03.</p>
+
+<p></p><pre><code class="hljs sql"># apt-get <span class="hljs-operator"><span class="hljs-keyword"><span class="hljs-operator"><span class="hljs-keyword">install</span></span></span><span class="hljs-operator"> -y docker-ce=$(apt-</span><span class="hljs-keyword"><span class="hljs-operator"><span class="hljs-keyword">cache</span></span></span><span class="hljs-operator"> madison docker-ce | grep </span><span class="hljs-number"><span class="hljs-operator"><span class="hljs-number">17.03</span></span></span><span class="hljs-operator"> | head -</span><span class="hljs-number"><span class="hljs-operator"><span class="hljs-number">1</span></span></span><span class="hljs-operator"> | awk </span><span class="hljs-string"><span class="hljs-operator"><span class="hljs-string">'{print $3}'</span></span></span><span class="hljs-operator">)</span></span></code></pre><p></p>
+
+<h3 id="installingkubeadmkubletandkubectl">Installing kubeadm, kublet, and kubectl</h3>
+
+<p>1- Add the Google repository key.</p>
+
+<p></p><pre><code class="hljs cpp"><span class="hljs-preprocessor"><span class="hljs-preprocessor"># curl -s https:</span><span class="hljs-comment"><span class="hljs-preprocessor"><span class="hljs-comment">//</span></span><a class="vglnk" href="http://packages.cloud.google.com/apt/doc/apt-key.gpg" rel="nofollow"><span><span class="hljs-preprocessor"><span class="hljs-comment">packages</span></span></span><span><span class="hljs-preprocessor"><span class="hljs-comment">.</span></span></span><span><span class="hljs-preprocessor"><span class="hljs-comment">cloud</span></span></span><span><span class="hljs-preprocessor"><span class="hljs-comment">.</span></span></span><span><span class="hljs-preprocessor"><span class="hljs-comment">google</span></span></span><span><span class="hljs-preprocessor"><span class="hljs-comment">.</span></span></span><span><span class="hljs-preprocessor"><span class="hljs-comment">com</span></span></span><span><span class="hljs-preprocessor"><span class="hljs-comment">/</span></span></span><span><span class="hljs-preprocessor"><span class="hljs-comment">apt</span></span></span><span><span class="hljs-preprocessor"><span class="hljs-comment">/</span></span></span><span><span class="hljs-preprocessor"><span class="hljs-comment">doc</span></span></span><span><span class="hljs-preprocessor"><span class="hljs-comment">/</span></span></span><span><span class="hljs-preprocessor"><span class="hljs-comment">apt</span></span></span><span><span class="hljs-preprocessor"><span class="hljs-comment">-</span></span></span><span><span class="hljs-preprocessor"><span class="hljs-comment">key</span></span></span><span><span class="hljs-preprocessor"><span class="hljs-comment">.</span></span></span><span><span class="hljs-preprocessor"><span class="hljs-comment">gpg</span></span></span></a><span class="hljs-preprocessor"><span class="hljs-comment"> | apt-key add -</span></span></span></span></code></pre><p></p>
+
+<p>2- Add the Google repository.</p>
+
+<p></p><pre><code class="hljs nginx"><span class="hljs-comment"><span class="hljs-comment"># vim /etc/apt/sources.list.d/kubernetes.list</span></span>
+<span class="hljs-title"><span class="hljs-title">deb</span></span> <span class="hljs-url"><a class="vglnk" href="http://apt.kubernetes.io/" rel="nofollow"><span><span class="hljs-url">http</span></span><span><span class="hljs-url">://</span></span><span><span class="hljs-url">apt</span></span><span><span class="hljs-url">.</span></span><span><span class="hljs-url">kubernetes</span></span><span><span class="hljs-url">.</span></span><span><span class="hljs-url">io</span></span></a></span> kubernetes-xenial main
+</code></pre><p></p>
+
+<p>3- Update the list of packages.</p>
+
+<p></p><pre><code class="hljs apache"><span class="hljs-comment"><span class="hljs-comment"># apt-get update</span></span></code></pre><p></p>
+
+<p>4- Install kubelet, kubeadm and kubectl.</p>
+
+<p></p><pre><code class="hljs apache"><span class="hljs-comment"><span class="hljs-comment"># apt-get install kubelet kubeadm kubectl</span></span></code></pre><p></p>
+
+<p>5- Disable the swap.</p>
+
+<p></p><pre><code class="hljs apache"><span class="hljs-comment"><span class="hljs-comment"># swapoff -a</span></span></code></pre><p></p>
+
+<p></p><pre><code class="hljs apache"><span class="hljs-comment"><span class="hljs-comment"># sed -i '/ swap / s/^/#/' /etc/fstab</span></span></code></pre><p></p>
+
+<h2 id="preparingthe101040100machine">Preparing the 10.10.40.100 machine</h2>
+
+<h3 id="installingdocker">Installing Docker</h3>
+
+<p>1- SSH to the 10.10.40.100 machine.</p>
+
+<p></p><pre><code class="hljs ruby"><span class="hljs-variable"><span class="hljs-variable">$ </span></span>ssh sguyennet<span class="hljs-variable"><span class="hljs-variable">@10</span></span>.<span class="hljs-number"><span class="hljs-number">10.40</span></span>.<span class="hljs-number"><span class="hljs-number">100</span></span></code></pre><p></p>
+
+<p>2- Get administrator privileges.</p>
+
+<p></p><pre><code class="hljs bash">$ <span class="hljs-built_in"><span class="hljs-built_in">sudo</span></span> <span class="hljs-operator"><span class="hljs-operator">-s</span></span></code></pre><p></p>
+
+<p>3- Add the Docker repository key.</p>
+
+<p></p><pre><code class="hljs cpp"><span class="hljs-preprocessor"><span class="hljs-preprocessor"># curl -fsSL https:</span><span class="hljs-comment"><span class="hljs-preprocessor"><span class="hljs-comment">//</span></span><a class="vglnk" href="http://download.docker.com/linux/ubuntu/gpg" rel="nofollow"><span><span class="hljs-preprocessor"><span class="hljs-comment">download</span></span></span><span><span class="hljs-preprocessor"><span class="hljs-comment">.</span></span></span><span><span class="hljs-preprocessor"><span class="hljs-comment">docker</span></span></span><span><span class="hljs-preprocessor"><span class="hljs-comment">.</span></span></span><span><span class="hljs-preprocessor"><span class="hljs-comment">com</span></span></span><span><span class="hljs-preprocessor"><span class="hljs-comment">/</span></span></span><span><span class="hljs-preprocessor"><span class="hljs-comment">linux</span></span></span><span><span class="hljs-preprocessor"><span class="hljs-comment">/</span></span></span><span><span class="hljs-preprocessor"><span class="hljs-comment">ubuntu</span></span></span><span><span class="hljs-preprocessor"><span class="hljs-comment">/</span></span></span><span><span class="hljs-preprocessor"><span class="hljs-comment">gpg</span></span></span></a><span class="hljs-preprocessor"><span class="hljs-comment"> | apt-key add -</span></span></span></span></code></pre><p></p>
+
+<p>4- Add the Docker repository.</p>
+
+<p></p><pre><code class="hljs bash"><span class="hljs-comment"><span class="hljs-comment"># add-apt-repository \</span></span>
+<span class="hljs-string"><span class="hljs-string">"deb </span><a class="vglnk" href="https://download.docker.com/linux/" rel="nofollow"><span><span class="hljs-string">https</span></span><span><span class="hljs-string">://</span></span><span><span class="hljs-string">download</span></span><span><span class="hljs-string">.</span></span><span><span class="hljs-string">docker</span></span><span><span class="hljs-string">.</span></span><span><span class="hljs-string">com</span></span><span><span class="hljs-string">/</span></span><span><span class="hljs-string">linux</span></span><span><span class="hljs-string">/</span></span></a><span class="hljs-variable"><span class="hljs-string"><span class="hljs-variable">$(. /etc/os-release; echo "$ID")</span></span></span><span class="hljs-string"> \
+</span><span class="hljs-variable"><span class="hljs-string"><span class="hljs-variable">$(lsb_release -cs)</span></span></span><span class="hljs-string"> \
+stable"</span></span></code></pre><p></p>
+
+<p>5- Update the list of packages.</p>
+
+<p></p><pre><code class="hljs apache"><span class="hljs-comment"><span class="hljs-comment"># apt-get update</span></span></code></pre><p></p>
+
+<p>6- Install Docker 17.03.</p>
+
+<p></p><pre><code class="hljs sql"># apt-get <span class="hljs-operator"><span class="hljs-keyword"><span class="hljs-operator"><span class="hljs-keyword">install</span></span></span><span class="hljs-operator"> -y docker-ce=$(apt-</span><span class="hljs-keyword"><span class="hljs-operator"><span class="hljs-keyword">cache</span></span></span><span class="hljs-operator"> madison docker-ce | grep </span><span class="hljs-number"><span class="hljs-operator"><span class="hljs-number">17.03</span></span></span><span class="hljs-operator"> | head -</span><span class="hljs-number"><span class="hljs-operator"><span class="hljs-number">1</span></span></span><span class="hljs-operator"> | awk </span><span class="hljs-string"><span class="hljs-operator"><span class="hljs-string">'{print $3}'</span></span></span><span class="hljs-operator">)</span></span></code></pre><p></p>
+
+<h3 id="installingkubeadmkubletandkubectl">Installing kubeadm, kublet, and kubectl</h3>
+
+<p>1- Add the Google repository key.</p>
+
+<p></p><pre><code class="hljs cpp"><span class="hljs-preprocessor"><span class="hljs-preprocessor"># curl -s https:</span><span class="hljs-comment"><span class="hljs-preprocessor"><span class="hljs-comment">//</span></span><a class="vglnk" href="http://packages.cloud.google.com/apt/doc/apt-key.gpg" rel="nofollow"><span><span class="hljs-preprocessor"><span class="hljs-comment">packages</span></span></span><span><span class="hljs-preprocessor"><span class="hljs-comment">.</span></span></span><span><span class="hljs-preprocessor"><span class="hljs-comment">cloud</span></span></span><span><span class="hljs-preprocessor"><span class="hljs-comment">.</span></span></span><span><span class="hljs-preprocessor"><span class="hljs-comment">google</span></span></span><span><span class="hljs-preprocessor"><span class="hljs-comment">.</span></span></span><span><span class="hljs-preprocessor"><span class="hljs-comment">com</span></span></span><span><span class="hljs-preprocessor"><span class="hljs-comment">/</span></span></span><span><span class="hljs-preprocessor"><span class="hljs-comment">apt</span></span></span><span><span class="hljs-preprocessor"><span class="hljs-comment">/</span></span></span><span><span class="hljs-preprocessor"><span class="hljs-comment">doc</span></span></span><span><span class="hljs-preprocessor"><span class="hljs-comment">/</span></span></span><span><span class="hljs-preprocessor"><span class="hljs-comment">apt</span></span></span><span><span class="hljs-preprocessor"><span class="hljs-comment">-</span></span></span><span><span class="hljs-preprocessor"><span class="hljs-comment">key</span></span></span><span><span class="hljs-preprocessor"><span class="hljs-comment">.</span></span></span><span><span class="hljs-preprocessor"><span class="hljs-comment">gpg</span></span></span></a><span class="hljs-preprocessor"><span class="hljs-comment"> | apt-key add -</span></span></span></span></code></pre><p></p>
+
+<p>2- Add the Google repository.</p>
+
+<p></p><pre><code class="hljs nginx"><span class="hljs-comment"><span class="hljs-comment"># vim /etc/apt/sources.list.d/kubernetes.list</span></span>
+<span class="hljs-title"><span class="hljs-title">deb</span></span> <span class="hljs-url"><a class="vglnk" href="http://apt.kubernetes.io/" rel="nofollow"><span><span class="hljs-url">http</span></span><span><span class="hljs-url">://</span></span><span><span class="hljs-url">apt</span></span><span><span class="hljs-url">.</span></span><span><span class="hljs-url">kubernetes</span></span><span><span class="hljs-url">.</span></span><span><span class="hljs-url">io</span></span></a></span> kubernetes-xenial main
+</code></pre><p></p>
+
+<p>3- Update the list of packages.</p>
+
+<p></p><pre><code class="hljs apache"><span class="hljs-comment"><span class="hljs-comment"># apt-get update</span></span></code></pre><p></p>
+
+<p>4- Install kubelet, kubeadm and kubectl.</p>
+
+<p></p><pre><code class="hljs apache"><span class="hljs-comment"><span class="hljs-comment"># apt-get install kubelet kubeadm kubectl</span></span></code></pre><p></p>
+
+<p>5- Disable the swap.</p>
+
+<p></p><pre><code class="hljs apache"><span class="hljs-comment"><span class="hljs-comment"># swapoff -a</span></span></code></pre><p></p>
+
+<p></p><pre><code class="hljs apache"><span class="hljs-comment"><span class="hljs-comment"># sed -i '/ swap / s/^/#/' /etc/fstab</span></span></code></pre><p></p>
+
+<h2 id="preparingthe101040101machine">Preparing the 10.10.40.101 machine</h2>
+
+<h3 id="installingdocker">Installing Docker</h3>
+
+<p>1- SSH to the 10.10.40.101 machine.</p>
+
+<p></p><pre><code class="hljs ruby"><span class="hljs-variable"><span class="hljs-variable">$ </span></span>ssh sguyennet<span class="hljs-variable"><span class="hljs-variable">@10</span></span>.<span class="hljs-number"><span class="hljs-number">10.40</span></span>.<span class="hljs-number"><span class="hljs-number">101</span></span></code></pre><p></p>
+
+<p>2- Get administrator privileges.</p>
+
+<p></p><pre><code class="hljs bash">$ <span class="hljs-built_in"><span class="hljs-built_in">sudo</span></span> <span class="hljs-operator"><span class="hljs-operator">-s</span></span></code></pre><p></p>
+
+<p>3- Add the Docker repository key.</p>
+
+<p></p><pre><code class="hljs cpp"><span class="hljs-preprocessor"><span class="hljs-preprocessor"># curl -fsSL https:</span><span class="hljs-comment"><span class="hljs-preprocessor"><span class="hljs-comment">//</span></span><a class="vglnk" href="http://download.docker.com/linux/ubuntu/gpg" rel="nofollow"><span><span class="hljs-preprocessor"><span class="hljs-comment">download</span></span></span><span><span class="hljs-preprocessor"><span class="hljs-comment">.</span></span></span><span><span class="hljs-preprocessor"><span class="hljs-comment">docker</span></span></span><span><span class="hljs-preprocessor"><span class="hljs-comment">.</span></span></span><span><span class="hljs-preprocessor"><span class="hljs-comment">com</span></span></span><span><span class="hljs-preprocessor"><span class="hljs-comment">/</span></span></span><span><span class="hljs-preprocessor"><span class="hljs-comment">linux</span></span></span><span><span class="hljs-preprocessor"><span class="hljs-comment">/</span></span></span><span><span class="hljs-preprocessor"><span class="hljs-comment">ubuntu</span></span></span><span><span class="hljs-preprocessor"><span class="hljs-comment">/</span></span></span><span><span class="hljs-preprocessor"><span class="hljs-comment">gpg</span></span></span></a><span class="hljs-preprocessor"><span class="hljs-comment"> | apt-key add -</span></span></span></span></code></pre><p></p>
+
+<p>4- Add the Docker repository.</p>
+
+<p></p><pre><code class="hljs bash"><span class="hljs-comment"><span class="hljs-comment"># add-apt-repository \</span></span>
+<span class="hljs-string"><span class="hljs-string">"deb </span><a class="vglnk" href="https://download.docker.com/linux/" rel="nofollow"><span><span class="hljs-string">https</span></span><span><span class="hljs-string">://</span></span><span><span class="hljs-string">download</span></span><span><span class="hljs-string">.</span></span><span><span class="hljs-string">docker</span></span><span><span class="hljs-string">.</span></span><span><span class="hljs-string">com</span></span><span><span class="hljs-string">/</span></span><span><span class="hljs-string">linux</span></span><span><span class="hljs-string">/</span></span></a><span class="hljs-variable"><span class="hljs-string"><span class="hljs-variable">$(. /etc/os-release; echo "$ID")</span></span></span><span class="hljs-string"> \
+</span><span class="hljs-variable"><span class="hljs-string"><span class="hljs-variable">$(lsb_release -cs)</span></span></span><span class="hljs-string"> \
+stable"</span></span></code></pre><p></p>
+
+<p>5- Update the list of packages.</p>
+
+<p></p><pre><code class="hljs apache"><span class="hljs-comment"><span class="hljs-comment"># apt-get update</span></span></code></pre><p></p>
+
+<p>6- Install Docker 17.03.</p>
+
+<p></p><pre><code class="hljs sql"># apt-get <span class="hljs-operator"><span class="hljs-keyword"><span class="hljs-operator"><span class="hljs-keyword">install</span></span></span><span class="hljs-operator"> -y docker-ce=$(apt-</span><span class="hljs-keyword"><span class="hljs-operator"><span class="hljs-keyword">cache</span></span></span><span class="hljs-operator"> madison docker-ce | grep </span><span class="hljs-number"><span class="hljs-operator"><span class="hljs-number">17.03</span></span></span><span class="hljs-operator"> | head -</span><span class="hljs-number"><span class="hljs-operator"><span class="hljs-number">1</span></span></span><span class="hljs-operator"> | awk </span><span class="hljs-string"><span class="hljs-operator"><span class="hljs-string">'{print $3}'</span></span></span><span class="hljs-operator">)</span></span></code></pre><p></p>
+
+<h3 id="installingkubeadmkubletandkubectl">Installing kubeadm, kublet, and kubectl</h3>
+
+<p>1- Add the Google repository key.</p>
+
+<p></p><pre><code class="hljs cpp"><span class="hljs-preprocessor"><span class="hljs-preprocessor"># curl -s https:</span><span class="hljs-comment"><span class="hljs-preprocessor"><span class="hljs-comment">//</span></span><a class="vglnk" href="http://packages.cloud.google.com/apt/doc/apt-key.gpg" rel="nofollow"><span><span class="hljs-preprocessor"><span class="hljs-comment">packages</span></span></span><span><span class="hljs-preprocessor"><span class="hljs-comment">.</span></span></span><span><span class="hljs-preprocessor"><span class="hljs-comment">cloud</span></span></span><span><span class="hljs-preprocessor"><span class="hljs-comment">.</span></span></span><span><span class="hljs-preprocessor"><span class="hljs-comment">google</span></span></span><span><span class="hljs-preprocessor"><span class="hljs-comment">.</span></span></span><span><span class="hljs-preprocessor"><span class="hljs-comment">com</span></span></span><span><span class="hljs-preprocessor"><span class="hljs-comment">/</span></span></span><span><span class="hljs-preprocessor"><span class="hljs-comment">apt</span></span></span><span><span class="hljs-preprocessor"><span class="hljs-comment">/</span></span></span><span><span class="hljs-preprocessor"><span class="hljs-comment">doc</span></span></span><span><span class="hljs-preprocessor"><span class="hljs-comment">/</span></span></span><span><span class="hljs-preprocessor"><span class="hljs-comment">apt</span></span></span><span><span class="hljs-preprocessor"><span class="hljs-comment">-</span></span></span><span><span class="hljs-preprocessor"><span class="hljs-comment">key</span></span></span><span><span class="hljs-preprocessor"><span class="hljs-comment">.</span></span></span><span><span class="hljs-preprocessor"><span class="hljs-comment">gpg</span></span></span></a><span class="hljs-preprocessor"><span class="hljs-comment"> | apt-key add -</span></span></span></span></code></pre><p></p>
+
+<p>2- Add the Google repository.</p>
+
+<p></p><pre><code class="hljs nginx"><span class="hljs-comment"><span class="hljs-comment"># vim /etc/apt/sources.list.d/kubernetes.list</span></span>
+<span class="hljs-title"><span class="hljs-title">deb</span></span> <span class="hljs-url"><a class="vglnk" href="http://apt.kubernetes.io/" rel="nofollow"><span><span class="hljs-url">http</span></span><span><span class="hljs-url">://</span></span><span><span class="hljs-url">apt</span></span><span><span class="hljs-url">.</span></span><span><span class="hljs-url">kubernetes</span></span><span><span class="hljs-url">.</span></span><span><span class="hljs-url">io</span></span></a></span> kubernetes-xenial main
+</code></pre><p></p>
+
+<p>3- Update the list of packages.</p>
+
+<p></p><pre><code class="hljs apache"><span class="hljs-comment"><span class="hljs-comment"># apt-get update</span></span></code></pre><p></p>
+
+<p>4- Install kubelet, kubeadm and kubectl.</p>
+
+<p></p><pre><code class="hljs apache"><span class="hljs-comment"><span class="hljs-comment"># apt-get install kubelet kubeadm kubectl</span></span></code></pre><p></p>
+
+<p>5- Disable the swap.</p>
+
+<p></p><pre><code class="hljs apache"><span class="hljs-comment"><span class="hljs-comment"># swapoff -a</span></span></code></pre><p></p>
+
+<p></p><pre><code class="hljs apache"><span class="hljs-comment"><span class="hljs-comment"># sed -i '/ swap / s/^/#/' /etc/fstab</span></span></code></pre><p></p>
+
+<h2 id="preparingthe101040102machine">Preparing the 10.10.40.102 machine</h2>
+
+<h3 id="installingdocker">Installing Docker</h3>
+
+<p>1- SSH to the 10.10.40.102 machine.</p>
+
+<p></p><pre><code class="hljs ruby"><span class="hljs-variable"><span class="hljs-variable">$ </span></span>ssh sguyennet<span class="hljs-variable"><span class="hljs-variable">@10</span></span>.<span class="hljs-number"><span class="hljs-number">10.40</span></span>.<span class="hljs-number"><span class="hljs-number">102</span></span></code></pre><p></p>
+
+<p>2- Get administrator privileges.</p>
+
+<p></p><pre><code class="hljs bash">$ <span class="hljs-built_in"><span class="hljs-built_in">sudo</span></span> <span class="hljs-operator"><span class="hljs-operator">-s</span></span></code></pre><p></p>
+
+<p>3- Add the Docker repository key.</p>
+
+<p></p><pre><code class="hljs cpp"><span class="hljs-preprocessor"><span class="hljs-preprocessor"># curl -fsSL https:</span><span class="hljs-comment"><span class="hljs-preprocessor"><span class="hljs-comment">//</span></span><a class="vglnk" href="http://download.docker.com/linux/ubuntu/gpg" rel="nofollow"><span><span class="hljs-preprocessor"><span class="hljs-comment">download</span></span></span><span><span class="hljs-preprocessor"><span class="hljs-comment">.</span></span></span><span><span class="hljs-preprocessor"><span class="hljs-comment">docker</span></span></span><span><span class="hljs-preprocessor"><span class="hljs-comment">.</span></span></span><span><span class="hljs-preprocessor"><span class="hljs-comment">com</span></span></span><span><span class="hljs-preprocessor"><span class="hljs-comment">/</span></span></span><span><span class="hljs-preprocessor"><span class="hljs-comment">linux</span></span></span><span><span class="hljs-preprocessor"><span class="hljs-comment">/</span></span></span><span><span class="hljs-preprocessor"><span class="hljs-comment">ubuntu</span></span></span><span><span class="hljs-preprocessor"><span class="hljs-comment">/</span></span></span><span><span class="hljs-preprocessor"><span class="hljs-comment">gpg</span></span></span></a><span class="hljs-preprocessor"><span class="hljs-comment"> | apt-key add -</span></span></span></span></code></pre><p></p>
+
+<p>4- Add the Docker repository.</p>
+
+<p></p><pre><code class="hljs bash"><span class="hljs-comment"><span class="hljs-comment"># add-apt-repository \</span></span>
+<span class="hljs-string"><span class="hljs-string">"deb </span><a class="vglnk" href="https://download.docker.com/linux/" rel="nofollow"><span><span class="hljs-string">https</span></span><span><span class="hljs-string">://</span></span><span><span class="hljs-string">download</span></span><span><span class="hljs-string">.</span></span><span><span class="hljs-string">docker</span></span><span><span class="hljs-string">.</span></span><span><span class="hljs-string">com</span></span><span><span class="hljs-string">/</span></span><span><span class="hljs-string">linux</span></span><span><span class="hljs-string">/</span></span></a><span class="hljs-variable"><span class="hljs-string"><span class="hljs-variable">$(. /etc/os-release; echo "$ID")</span></span></span><span class="hljs-string"> \
+</span><span class="hljs-variable"><span class="hljs-string"><span class="hljs-variable">$(lsb_release -cs)</span></span></span><span class="hljs-string"> \
+stable"</span></span></code></pre><p></p>
+
+<p>5- Update the list of packages.</p>
+
+<p></p><pre><code class="hljs apache"><span class="hljs-comment"><span class="hljs-comment"># apt-get update</span></span></code></pre><p></p>
+
+<p>6- Install Docker 17.03.</p>
+
+<p></p><pre><code class="hljs sql"># apt-get <span class="hljs-operator"><span class="hljs-keyword"><span class="hljs-operator"><span class="hljs-keyword">install</span></span></span><span class="hljs-operator"> -y docker-ce=$(apt-</span><span class="hljs-keyword"><span class="hljs-operator"><span class="hljs-keyword">cache</span></span></span><span class="hljs-operator"> madison docker-ce | grep </span><span class="hljs-number"><span class="hljs-operator"><span class="hljs-number">17.03</span></span></span><span class="hljs-operator"> | head -</span><span class="hljs-number"><span class="hljs-operator"><span class="hljs-number">1</span></span></span><span class="hljs-operator"> | awk </span><span class="hljs-string"><span class="hljs-operator"><span class="hljs-string">'{print $3}'</span></span></span><span class="hljs-operator">)</span></span></code></pre><p></p>
+
+<h3 id="installingkubeadmkubletandkubectl">Installing kubeadm, kublet, and kubectl</h3>
+
+<p>1- Add the Google repository key.</p>
+
+<p></p><pre><code class="hljs cpp"><span class="hljs-preprocessor"><span class="hljs-preprocessor"># curl -s https:</span><span class="hljs-comment"><span class="hljs-preprocessor"><span class="hljs-comment">//</span></span><a class="vglnk" href="http://packages.cloud.google.com/apt/doc/apt-key.gpg" rel="nofollow"><span><span class="hljs-preprocessor"><span class="hljs-comment">packages</span></span></span><span><span class="hljs-preprocessor"><span class="hljs-comment">.</span></span></span><span><span class="hljs-preprocessor"><span class="hljs-comment">cloud</span></span></span><span><span class="hljs-preprocessor"><span class="hljs-comment">.</span></span></span><span><span class="hljs-preprocessor"><span class="hljs-comment">google</span></span></span><span><span class="hljs-preprocessor"><span class="hljs-comment">.</span></span></span><span><span class="hljs-preprocessor"><span class="hljs-comment">com</span></span></span><span><span class="hljs-preprocessor"><span class="hljs-comment">/</span></span></span><span><span class="hljs-preprocessor"><span class="hljs-comment">apt</span></span></span><span><span class="hljs-preprocessor"><span class="hljs-comment">/</span></span></span><span><span class="hljs-preprocessor"><span class="hljs-comment">doc</span></span></span><span><span class="hljs-preprocessor"><span class="hljs-comment">/</span></span></span><span><span class="hljs-preprocessor"><span class="hljs-comment">apt</span></span></span><span><span class="hljs-preprocessor"><span class="hljs-comment">-</span></span></span><span><span class="hljs-preprocessor"><span class="hljs-comment">key</span></span></span><span><span class="hljs-preprocessor"><span class="hljs-comment">.</span></span></span><span><span class="hljs-preprocessor"><span class="hljs-comment">gpg</span></span></span></a><span class="hljs-preprocessor"><span class="hljs-comment"> | apt-key add -</span></span></span></span></code></pre><p></p>
+
+<p>2- Add the Google repository.</p>
+
+<p></p><pre><code class="hljs nginx"><span class="hljs-comment"><span class="hljs-comment"># vim /etc/apt/sources.list.d/kubernetes.list</span></span>
+<span class="hljs-title"><span class="hljs-title">deb</span></span> <span class="hljs-url"><a class="vglnk" href="http://apt.kubernetes.io/" rel="nofollow"><span><span class="hljs-url">http</span></span><span><span class="hljs-url">://</span></span><span><span class="hljs-url">apt</span></span><span><span class="hljs-url">.</span></span><span><span class="hljs-url">kubernetes</span></span><span><span class="hljs-url">.</span></span><span><span class="hljs-url">io</span></span></a></span> kubernetes-xenial main
+</code></pre><p></p>
+
+<p>3- Update the list of packages.</p>
+
+<p></p><pre><code class="hljs apache"><span class="hljs-comment"><span class="hljs-comment"># apt-get update</span></span></code></pre><p></p>
+
+<p>4- Install kubelet, kubeadm and kubectl.</p>
+
+<p></p><pre><code class="hljs apache"><span class="hljs-comment"><span class="hljs-comment"># apt-get install kubelet kubeadm kubectl</span></span></code></pre><p></p>
+
+<p>5- Disable the swap.</p>
+
+<p></p><pre><code class="hljs apache"><span class="hljs-comment"><span class="hljs-comment"># swapoff -a</span></span></code></pre><p></p>
+
+<p></p><pre><code class="hljs apache"><span class="hljs-comment"><span class="hljs-comment"># sed -i '/ swap / s/^/#/' /etc/fstab</span></span></code></pre><p></p>
+
+<h1 id="installingandconfiguringetcd">Installing and configuring Etcd</h1>
+
+<h2 id="installingandconfiguringetcdonthe10104090machine">Installing and configuring Etcd on the 10.10.40.90 machine</h2>
+
+<p>1- SSH to the 10.10.40.90 machine.</p>
+
+<p></p><pre><code class="hljs ruby"><span class="hljs-variable"><span class="hljs-variable">$ </span></span>ssh sguyennet<span class="hljs-variable"><span class="hljs-variable">@10</span></span>.<span class="hljs-number"><span class="hljs-number">10.40</span></span>.<span class="hljs-number"><span class="hljs-number">90</span></span></code></pre><p></p>
+
+<p>2- Create a configuration directory for Etcd.</p>
+
+<p></p><pre><code class="hljs bash">$ <span class="hljs-built_in"><span class="hljs-built_in">sudo</span></span> mkdir /etc/etcd /var/lib/etcd</code></pre><p></p>
+
+<p>3- Move the certificates to the configuration directory.</p>
+
+<p></p><pre><code class="hljs ruby"><span class="hljs-variable"><span class="hljs-variable">$ </span></span>sudo mv ~<span class="hljs-regexp"><span class="hljs-regexp">/ca.pem ~/kubernetes</span></span>.pem ~<span class="hljs-regexp"><span class="hljs-regexp">/kubernetes-key.pem /etc</span></span><span class="hljs-regexp"><span class="hljs-regexp">/etcd</span></span></code></pre><p></p>
+
+<p>4- Download the etcd binaries.</p>
+
+<p></p><pre><code class="hljs ruby"><span class="hljs-variable"><span class="hljs-variable">$ </span></span>wget <span class="hljs-symbol"><span class="hljs-symbol">https:</span></span>/<span class="hljs-regexp"><span class="hljs-regexp">/</span><a class="vglnk" href="http://github.com/coreos" rel="nofollow"><span><span class="hljs-regexp">github</span></span><span><span class="hljs-regexp">.</span></span><span><span class="hljs-regexp">com</span></span><span><span class="hljs-regexp">/</span></span><span><span class="hljs-regexp">coreos</span></span></a></span><span class="hljs-regexp"><span class="hljs-regexp">/etcd/releases</span></span><span class="hljs-regexp"><span class="hljs-regexp">/download/v</span></span>3.<span class="hljs-number"><span class="hljs-number">3.9</span></span>/etcd-v3.<span class="hljs-number"><span class="hljs-number">3.9</span></span>-linux-amd64.tar.gz</code></pre><p></p>
+
+<p>5- Extract the etcd archive.</p>
+
+<p></p><pre><code class="hljs ruby"><span class="hljs-variable"><span class="hljs-variable">$ </span></span>tar xvzf etcd-v3.<span class="hljs-number"><span class="hljs-number">3.9</span></span>-linux-amd64.tar.gz</code></pre><p></p>
+
+<p>6- Move the etcd binaries to /usr/local/bin.</p>
+
+<p></p><pre><code class="hljs ruby"><span class="hljs-variable"><span class="hljs-variable">$ </span></span>sudo mv etcd-v3.<span class="hljs-number"><span class="hljs-number">3.9</span></span>-linux-amd64/etcd* <span class="hljs-regexp"><span class="hljs-regexp">/usr/local</span></span><span class="hljs-regexp"><span class="hljs-regexp">/bin/</span></span></code></pre><p></p>
+
+<p>7- Create an etcd systemd unit file.</p>
+
+<p></p><pre><code class="hljs ruby"><span class="hljs-variable"><span class="hljs-variable">$ </span></span>sudo vim /etc/systemd/system/etcd.service
+[<span class="hljs-constant"><span class="hljs-constant">Unit</span></span>]
+<span class="hljs-constant"><span class="hljs-constant">Description</span></span>=etcd
+<span class="hljs-constant"><span class="hljs-constant">Documentation</span></span>=<span class="hljs-symbol"><span class="hljs-symbol">https:</span></span>/<span class="hljs-regexp"><span class="hljs-regexp">/</span><a class="vglnk" href="http://github.com/coreos" rel="nofollow"><span><span class="hljs-regexp">github</span></span><span><span class="hljs-regexp">.</span></span><span><span class="hljs-regexp">com</span></span><span><span class="hljs-regexp">/</span></span><span><span class="hljs-regexp">coreos</span></span></a></span><p></p>
+
+<p>[<span class="hljs-constant"><span class="hljs-constant">Service</span></span>]
+<span class="hljs-constant"><span class="hljs-constant">ExecStart</span></span>=<span class="hljs-regexp"><span class="hljs-regexp">/usr/local</span></span><span class="hljs-regexp"><span class="hljs-regexp">/bin/etcd</span></span> \
+  --name <span class="hljs-number"><span class="hljs-number">10.10</span></span>.<span class="hljs-number"><span class="hljs-number">40.90</span></span> \
+  --cert-file=<span class="hljs-regexp"><span class="hljs-regexp">/etc/etcd</span></span><span class="hljs-regexp"><span class="hljs-regexp">/kubernetes.pem \
+  --key-file=/etc</span></span><span class="hljs-regexp"><span class="hljs-regexp">/etcd/kubernetes</span></span>-key.pem \
+  --peer-cert-file=<span class="hljs-regexp"><span class="hljs-regexp">/etc/etcd</span></span><span class="hljs-regexp"><span class="hljs-regexp">/kubernetes.pem \
+  --peer-key-file=/etc</span></span><span class="hljs-regexp"><span class="hljs-regexp">/etcd/kubernetes</span></span>-key.pem \
+  --trusted-ca-file=<span class="hljs-regexp"><span class="hljs-regexp">/etc/etcd</span></span><span class="hljs-regexp"><span class="hljs-regexp">/ca.pem \
+  --peer-trusted-ca-file=/etc</span></span><span class="hljs-regexp"><span class="hljs-regexp">/etcd/ca</span></span>.pem \
+  --peer-client-cert-auth \
+  --client-cert-auth \
+  --initial-advertise-peer-urls <span class="hljs-symbol"><span class="hljs-symbol">https:</span></span>/<span class="hljs-regexp"><span class="hljs-regexp">/10.10.40.90:2380 \
+  --listen-peer-urls https:/</span></span><span class="hljs-regexp"><span class="hljs-regexp">/10.10.40.90:2380 \
+  --listen-client-urls https:/</span></span><span class="hljs-regexp"><span class="hljs-regexp">/10.10.40.90:2379,http:/</span></span><span class="hljs-regexp"><span class="hljs-regexp">/127.0.0.1:2379 \
+  --advertise-client-urls https:/</span></span><span class="hljs-regexp"><span class="hljs-regexp">/10.10.40.90:2379 \
+  --initial-cluster-token etcd-cluster-0 \
+  --initial-cluster 10.10.40.90=https:/</span></span><span class="hljs-regexp"><span class="hljs-regexp">/10.10.40.90:2380,10.10.40.91=https:/</span></span><span class="hljs-regexp"><span class="hljs-regexp">/10.10.40.91:2380,10.10.40.92=https:/</span></span><span class="hljs-regexp"><span class="hljs-regexp">/10.10.40.92:2380 \
+  --initial-cluster-state new \
+  --data-dir=/var</span></span><span class="hljs-regexp"><span class="hljs-regexp">/lib/etcd</span></span>
+<span class="hljs-constant"><span class="hljs-constant">Restart</span></span>=on-failure
+<span class="hljs-constant"><span class="hljs-constant">RestartSec</span></span>=<span class="hljs-number"><span class="hljs-number">5</span></span></p>
+
+<p>[<span class="hljs-constant"><span class="hljs-constant">Install</span></span>]
+<span class="hljs-constant"><span class="hljs-constant">WantedBy</span></span>=multi-user.target</p></code></pre><p></p>
+
+<p>8- Reload the daemon configuration.</p>
+
+<p></p><pre><code class="hljs bash">$ <span class="hljs-built_in"><span class="hljs-built_in">sudo</span></span> systemctl daemon-reload</code></pre><p></p>
+
+<p>9- Enable etcd to start at boot time.</p>
+
+<p></p><pre><code class="hljs bash">$ <span class="hljs-built_in"><span class="hljs-built_in">sudo</span></span> systemctl enable etcd</code></pre><p></p>
+
+<p>10- Start etcd.</p>
+
+<p></p><pre><code class="hljs bash">$ <span class="hljs-built_in"><span class="hljs-built_in">sudo</span></span> systemctl start etcd</code></pre><p></p>
+
+<h2 id="installingandconfiguringetcdonthe10104091machine">Installing and configuring Etcd on the 10.10.40.91 machine</h2>
+
+<p>1- SSH to the 10.10.40.91 machine.</p>
+
+<p></p><pre><code class="hljs ruby"><span class="hljs-variable"><span class="hljs-variable">$ </span></span>ssh sguyennet<span class="hljs-variable"><span class="hljs-variable">@10</span></span>.<span class="hljs-number"><span class="hljs-number">10.40</span></span>.<span class="hljs-number"><span class="hljs-number">91</span></span></code></pre><p></p>
+
+<p>2- Create a configuration directory for Etcd.</p>
+
+<p></p><pre><code class="hljs bash">$ <span class="hljs-built_in"><span class="hljs-built_in">sudo</span></span> mkdir /etc/etcd /var/lib/etcd</code></pre><p></p>
+
+<p>3- Move the certificates to the configuration directory.</p>
+
+<p></p><pre><code class="hljs ruby"><span class="hljs-variable"><span class="hljs-variable">$ </span></span>sudo mv ~<span class="hljs-regexp"><span class="hljs-regexp">/ca.pem ~/kubernetes</span></span>.pem ~<span class="hljs-regexp"><span class="hljs-regexp">/kubernetes-key.pem /etc</span></span><span class="hljs-regexp"><span class="hljs-regexp">/etcd</span></span></code></pre><p></p>
+
+<p>4- Download the etcd binaries.</p>
+
+<p></p><pre><code class="hljs ruby"><span class="hljs-variable"><span class="hljs-variable">$ </span></span>wget <span class="hljs-symbol"><span class="hljs-symbol">https:</span></span>/<span class="hljs-regexp"><span class="hljs-regexp">/</span><a class="vglnk" href="http://github.com/coreos" rel="nofollow"><span><span class="hljs-regexp">github</span></span><span><span class="hljs-regexp">.</span></span><span><span class="hljs-regexp">com</span></span><span><span class="hljs-regexp">/</span></span><span><span class="hljs-regexp">coreos</span></span></a></span><span class="hljs-regexp"><span class="hljs-regexp">/etcd/releases</span></span><span class="hljs-regexp"><span class="hljs-regexp">/download/v</span></span>3.<span class="hljs-number"><span class="hljs-number">3.9</span></span>/etcd-v3.<span class="hljs-number"><span class="hljs-number">3.9</span></span>-linux-amd64.tar.gz</code></pre><p></p>
+
+<p>5- Extract the etcd archive.</p>
+
+<p></p><pre><code class="hljs ruby"><span class="hljs-variable"><span class="hljs-variable">$ </span></span>tar xvzf etcd-v3.<span class="hljs-number"><span class="hljs-number">3.9</span></span>-linux-amd64.tar.gz</code></pre><p></p>
+
+<p>6- Move the etcd binaries to /usr/local/bin.</p>
+
+<p></p><pre><code class="hljs ruby"><span class="hljs-variable"><span class="hljs-variable">$ </span></span>sudo mv etcd-v3.<span class="hljs-number"><span class="hljs-number">3.9</span></span>-linux-amd64/etcd* <span class="hljs-regexp"><span class="hljs-regexp">/usr/local</span></span><span class="hljs-regexp"><span class="hljs-regexp">/bin/</span></span></code></pre><p></p>
+
+<p>7- Create an etcd systemd unit file.</p>
+
+<p></p><pre><code class="hljs ruby"><span class="hljs-variable"><span class="hljs-variable">$ </span></span>sudo vim /etc/systemd/system/etcd.service
+[<span class="hljs-constant"><span class="hljs-constant">Unit</span></span>]
+<span class="hljs-constant"><span class="hljs-constant">Description</span></span>=etcd
+<span class="hljs-constant"><span class="hljs-constant">Documentation</span></span>=<span class="hljs-symbol"><span class="hljs-symbol">https:</span></span>/<span class="hljs-regexp"><span class="hljs-regexp">/</span><a class="vglnk" href="http://github.com/coreos" rel="nofollow"><span><span class="hljs-regexp">github</span></span><span><span class="hljs-regexp">.</span></span><span><span class="hljs-regexp">com</span></span><span><span class="hljs-regexp">/</span></span><span><span class="hljs-regexp">coreos</span></span></a></span><p></p>
+
+<p>[<span class="hljs-constant"><span class="hljs-constant">Service</span></span>]
+<span class="hljs-constant"><span class="hljs-constant">ExecStart</span></span>=<span class="hljs-regexp"><span class="hljs-regexp">/usr/local</span></span><span class="hljs-regexp"><span class="hljs-regexp">/bin/etcd</span></span> \
+  --name <span class="hljs-number"><span class="hljs-number">10.10</span></span>.<span class="hljs-number"><span class="hljs-number">40.91</span></span> \
+  --cert-file=<span class="hljs-regexp"><span class="hljs-regexp">/etc/etcd</span></span><span class="hljs-regexp"><span class="hljs-regexp">/kubernetes.pem \
+  --key-file=/etc</span></span><span class="hljs-regexp"><span class="hljs-regexp">/etcd/kubernetes</span></span>-key.pem \
+  --peer-cert-file=<span class="hljs-regexp"><span class="hljs-regexp">/etc/etcd</span></span><span class="hljs-regexp"><span class="hljs-regexp">/kubernetes.pem \
+  --peer-key-file=/etc</span></span><span class="hljs-regexp"><span class="hljs-regexp">/etcd/kubernetes</span></span>-key.pem \
+  --trusted-ca-file=<span class="hljs-regexp"><span class="hljs-regexp">/etc/etcd</span></span><span class="hljs-regexp"><span class="hljs-regexp">/ca.pem \
+  --peer-trusted-ca-file=/etc</span></span><span class="hljs-regexp"><span class="hljs-regexp">/etcd/ca</span></span>.pem \
+  --peer-client-cert-auth \
+  --client-cert-auth \
+  --initial-advertise-peer-urls <span class="hljs-symbol"><span class="hljs-symbol">https:</span></span>/<span class="hljs-regexp"><span class="hljs-regexp">/10.10.40.91:2380 \
+  --listen-peer-urls https:/</span></span><span class="hljs-regexp"><span class="hljs-regexp">/10.10.40.91:2380 \
+  --listen-client-urls https:/</span></span><span class="hljs-regexp"><span class="hljs-regexp">/10.10.40.91:2379,http:/</span></span><span class="hljs-regexp"><span class="hljs-regexp">/127.0.0.1:2379 \
+  --advertise-client-urls https:/</span></span><span class="hljs-regexp"><span class="hljs-regexp">/10.10.40.91:2379 \
+  --initial-cluster-token etcd-cluster-0 \
+  --initial-cluster 10.10.40.90=https:/</span></span><span class="hljs-regexp"><span class="hljs-regexp">/10.10.40.90:2380,10.10.40.91=https:/</span></span><span class="hljs-regexp"><span class="hljs-regexp">/10.10.40.91:2380,10.10.40.92=https:/</span></span><span class="hljs-regexp"><span class="hljs-regexp">/10.10.40.92:2380 \
+  --initial-cluster-state new \
+  --data-dir=/var</span></span><span class="hljs-regexp"><span class="hljs-regexp">/lib/etcd</span></span>
+<span class="hljs-constant"><span class="hljs-constant">Restart</span></span>=on-failure
+<span class="hljs-constant"><span class="hljs-constant">RestartSec</span></span>=<span class="hljs-number"><span class="hljs-number">5</span></span></p>
+
+<p>[<span class="hljs-constant"><span class="hljs-constant">Install</span></span>]
+<span class="hljs-constant"><span class="hljs-constant">WantedBy</span></span>=multi-user.target</p></code></pre><p></p>
+
+<p>8- Reload the daemon configuration.</p>
+
+<p></p><pre><code class="hljs bash">$ <span class="hljs-built_in"><span class="hljs-built_in">sudo</span></span> systemctl daemon-reload</code></pre><p></p>
+
+<p>9- Enable etcd to start at boot time.</p>
+
+<p></p><pre><code class="hljs bash">$ <span class="hljs-built_in"><span class="hljs-built_in">sudo</span></span> systemctl enable etcd</code></pre><p></p>
+
+<p>10- Start etcd.</p>
+
+<p></p><pre><code class="hljs bash">$ <span class="hljs-built_in"><span class="hljs-built_in">sudo</span></span> systemctl start etcd</code></pre><p></p>
+
+<h2 id="installingandconfiguringetcdonthe10104092machine">Installing and configuring Etcd on the 10.10.40.92 machine</h2>
+
+<p>1- SSH to the 10.10.40.92 machine.</p>
+
+<p></p><pre><code class="hljs ruby"><span class="hljs-variable"><span class="hljs-variable">$ </span></span>ssh sguyennet<span class="hljs-variable"><span class="hljs-variable">@10</span></span>.<span class="hljs-number"><span class="hljs-number">10.40</span></span>.<span class="hljs-number"><span class="hljs-number">92</span></span></code></pre><p></p>
+
+<p>2- Create a configuration directory for Etcd.</p>
+
+<p></p><pre><code class="hljs bash">$ <span class="hljs-built_in"><span class="hljs-built_in">sudo</span></span> mkdir /etc/etcd /var/lib/etcd</code></pre><p></p>
+
+<p>3- Move the certificates to the configuration directory.</p>
+
+<p></p><pre><code class="hljs ruby"><span class="hljs-variable"><span class="hljs-variable">$ </span></span>sudo mv ~<span class="hljs-regexp"><span class="hljs-regexp">/ca.pem ~/kubernetes</span></span>.pem ~<span class="hljs-regexp"><span class="hljs-regexp">/kubernetes-key.pem /etc</span></span><span class="hljs-regexp"><span class="hljs-regexp">/etcd</span></span></code></pre><p></p>
+
+<p>4- Download the etcd binaries.</p>
+
+<p></p><pre><code class="hljs ruby"><span class="hljs-variable"><span class="hljs-variable">$ </span></span>wget <span class="hljs-symbol"><span class="hljs-symbol">https:</span></span>/<span class="hljs-regexp"><span class="hljs-regexp">/</span><a class="vglnk" href="http://github.com/coreos" rel="nofollow"><span><span class="hljs-regexp">github</span></span><span><span class="hljs-regexp">.</span></span><span><span class="hljs-regexp">com</span></span><span><span class="hljs-regexp">/</span></span><span><span class="hljs-regexp">coreos</span></span></a></span><span class="hljs-regexp"><span class="hljs-regexp">/etcd/releases</span></span><span class="hljs-regexp"><span class="hljs-regexp">/download/v</span></span>3.<span class="hljs-number"><span class="hljs-number">3.9</span></span>/etcd-v3.<span class="hljs-number"><span class="hljs-number">3.9</span></span>-linux-amd64.tar.gz</code></pre><p></p>
+
+<p>5- Extract the etcd archive.</p>
+
+<p></p><pre><code class="hljs ruby"><span class="hljs-variable"><span class="hljs-variable">$ </span></span>tar xvzf etcd-v3.<span class="hljs-number"><span class="hljs-number">3.9</span></span>-linux-amd64.tar.gz</code></pre><p></p>
+
+<p>6- Move the etcd binaries to /usr/local/bin.</p>
+
+<p></p><pre><code class="hljs ruby"><span class="hljs-variable"><span class="hljs-variable">$ </span></span>sudo mv etcd-v3.<span class="hljs-number"><span class="hljs-number">3.9</span></span>-linux-amd64/etcd* <span class="hljs-regexp"><span class="hljs-regexp">/usr/local</span></span><span class="hljs-regexp"><span class="hljs-regexp">/bin/</span></span></code></pre><p></p>
+
+<p>7- Create an etcd systemd unit file.</p>
+
+<p></p><pre><code class="hljs ruby"><span class="hljs-variable"><span class="hljs-variable">$ </span></span>sudo vim /etc/systemd/system/etcd.service
+[<span class="hljs-constant"><span class="hljs-constant">Unit</span></span>]
+<span class="hljs-constant"><span class="hljs-constant">Description</span></span>=etcd
+<span class="hljs-constant"><span class="hljs-constant">Documentation</span></span>=<span class="hljs-symbol"><span class="hljs-symbol">https:</span></span>/<span class="hljs-regexp"><span class="hljs-regexp">/</span><a class="vglnk" href="http://github.com/coreos" rel="nofollow"><span><span class="hljs-regexp">github</span></span><span><span class="hljs-regexp">.</span></span><span><span class="hljs-regexp">com</span></span><span><span class="hljs-regexp">/</span></span><span><span class="hljs-regexp">coreos</span></span></a></span><p></p>
+
+<p>[<span class="hljs-constant"><span class="hljs-constant">Service</span></span>]
+<span class="hljs-constant"><span class="hljs-constant">ExecStart</span></span>=<span class="hljs-regexp"><span class="hljs-regexp">/usr/local</span></span><span class="hljs-regexp"><span class="hljs-regexp">/bin/etcd</span></span> \
+  --name <span class="hljs-number"><span class="hljs-number">10.10</span></span>.<span class="hljs-number"><span class="hljs-number">40.92</span></span> \
+  --cert-file=<span class="hljs-regexp"><span class="hljs-regexp">/etc/etcd</span></span><span class="hljs-regexp"><span class="hljs-regexp">/kubernetes.pem \
+  --key-file=/etc</span></span><span class="hljs-regexp"><span class="hljs-regexp">/etcd/kubernetes</span></span>-key.pem \
+  --peer-cert-file=<span class="hljs-regexp"><span class="hljs-regexp">/etc/etcd</span></span><span class="hljs-regexp"><span class="hljs-regexp">/kubernetes.pem \
+  --peer-key-file=/etc</span></span><span class="hljs-regexp"><span class="hljs-regexp">/etcd/kubernetes</span></span>-key.pem \
+  --trusted-ca-file=<span class="hljs-regexp"><span class="hljs-regexp">/etc/etcd</span></span><span class="hljs-regexp"><span class="hljs-regexp">/ca.pem \
+  --peer-trusted-ca-file=/etc</span></span><span class="hljs-regexp"><span class="hljs-regexp">/etcd/ca</span></span>.pem \
+  --peer-client-cert-auth \
+  --client-cert-auth \
+  --initial-advertise-peer-urls <span class="hljs-symbol"><span class="hljs-symbol">https:</span></span>/<span class="hljs-regexp"><span class="hljs-regexp">/10.10.40.92:2380 \
+  --listen-peer-urls https:/</span></span><span class="hljs-regexp"><span class="hljs-regexp">/10.10.40.92:2380 \
+  --listen-client-urls https:/</span></span><span class="hljs-regexp"><span class="hljs-regexp">/10.10.40.92:2379,http:/</span></span><span class="hljs-regexp"><span class="hljs-regexp">/127.0.0.1:2379 \
+  --advertise-client-urls https:/</span></span><span class="hljs-regexp"><span class="hljs-regexp">/10.10.40.92:2379 \
+  --initial-cluster-token etcd-cluster-0 \
+  --initial-cluster 10.10.40.90=https:/</span></span><span class="hljs-regexp"><span class="hljs-regexp">/10.10.40.90:2380,10.10.40.91=https:/</span></span><span class="hljs-regexp"><span class="hljs-regexp">/10.10.40.91:2380,10.10.40.92=https:/</span></span><span class="hljs-regexp"><span class="hljs-regexp">/10.10.40.92:2380 \
+  --initial-cluster-state new \
+  --data-dir=/var</span></span><span class="hljs-regexp"><span class="hljs-regexp">/lib/etcd</span></span>
+<span class="hljs-constant"><span class="hljs-constant">Restart</span></span>=on-failure
+<span class="hljs-constant"><span class="hljs-constant">RestartSec</span></span>=<span class="hljs-number"><span class="hljs-number">5</span></span></p>
+
+<p>[<span class="hljs-constant"><span class="hljs-constant">Install</span></span>]
+<span class="hljs-constant"><span class="hljs-constant">WantedBy</span></span>=multi-user.target</p></code></pre><p></p>
+
+<p>8- Reload the daemon configuration.</p>
+
+<p></p><pre><code class="hljs bash">$ <span class="hljs-built_in"><span class="hljs-built_in">sudo</span></span> systemctl daemon-reload</code></pre><p></p>
+
+<p>9- Enable etcd to start at boot time.</p>
+
+<p></p><pre><code class="hljs bash">$ <span class="hljs-built_in"><span class="hljs-built_in">sudo</span></span> systemctl enable etcd</code></pre><p></p>
+
+<p>10- Start etcd.</p>
+
+<p></p><pre><code class="hljs bash">$ <span class="hljs-built_in"><span class="hljs-built_in">sudo</span></span> systemctl start etcd</code></pre><p></p>
+
+<p>11- Verify that the cluster is up and running.</p>
+
+<p></p><pre><code class="hljs cpp">$ ETCDCTL_API=<span class="hljs-number"><span class="hljs-number">3</span></span> etcdctl member <span class="hljs-built_in"><span class="hljs-built_in">list</span></span></code></pre><p></p>
+
+<h1 id="initializingthemasternodes">Initializing the master nodes</h1>
+
+<h2 id="initializingthe10104090masternode">Initializing the 10.10.40.90 master node</h2>
+
+<p>1- SSH to the 10.10.40.90 machine.</p>
+
+<p></p><pre><code class="hljs ruby"><span class="hljs-variable"><span class="hljs-variable">$ </span></span>ssh sguyennet<span class="hljs-variable"><span class="hljs-variable">@10</span></span>.<span class="hljs-number"><span class="hljs-number">10.40</span></span>.<span class="hljs-number"><span class="hljs-number">90</span></span></code></pre><p></p>
+
+<p>2- Create the configuration file for kubeadm.</p>
+
+<p></p><pre><code class="hljs javascript">$ vim config.yaml
+apiVersion: <a class="vglnk" href="http://kubeadm.k8s.io/v1alpha3" rel="nofollow"><span>kubeadm</span><span>.</span><span>k8s</span><span>.</span><span>io</span><span>/</span><span>v1alpha3</span></a>
+kind: ClusterConfiguration
+kubernetesVersion: stable
+apiServerCertSANs:
+- <span class="hljs-number"><span class="hljs-number">10.10</span></span><span class="hljs-number"><span class="hljs-number">.40</span></span><span class="hljs-number"><span class="hljs-number">.93</span></span>
+controlPlaneEndpoint: <span class="hljs-string"><span class="hljs-string">"10.10.40.93:6443"</span></span>
+etcd:
+  external:
+    endpoints:
+    - https:<span class="hljs-comment"><span class="hljs-comment">//10.10.40.90:2379</span></span>
+    - https:<span class="hljs-comment"><span class="hljs-comment">//10.10.40.91:2379</span></span>
+    - https:<span class="hljs-comment"><span class="hljs-comment">//10.10.40.92:2379</span></span>
+    caFile: <span class="hljs-regexp"><span class="hljs-regexp">/etc/</span></span>etcd/ca.pem
+    certFile: <span class="hljs-regexp"><span class="hljs-regexp">/etc/</span></span>etcd/kubernetes.pem
+    keyFile: <span class="hljs-regexp"><span class="hljs-regexp">/etc/</span></span>etcd/kubernetes-key.pem
+networking:
+  podSubnet: <span class="hljs-number"><span class="hljs-number">10.30</span></span><span class="hljs-number"><span class="hljs-number">.0</span></span><span class="hljs-number"><span class="hljs-number">.0</span></span>/<span class="hljs-number"><span class="hljs-number">24</span></span>
+apiServerExtraArgs:
+  apiserver-count: <span class="hljs-string"><span class="hljs-string">"3"</span></span>
+</code></pre><p></p>
+
+<p>3- Initialize the machine as a master node.</p>
+
+<p></p><pre><code class="hljs bash">$ <span class="hljs-built_in"><span class="hljs-built_in">sudo</span></span> kubeadm init --config=config.yaml</code></pre><p></p>
+
+<p>4- Copy the certificates to the two other masters.</p>
+
+<p></p><pre><code class="hljs ruby"><span class="hljs-variable"><span class="hljs-variable">$ </span></span>sudo scp -r /etc/kubernetes/pki sguyennet<span class="hljs-variable"><span class="hljs-variable">@10</span></span>.<span class="hljs-number"><span class="hljs-number">10.40</span></span>.<span class="hljs-number"><span class="hljs-number">91</span></span><span class="hljs-symbol"><span class="hljs-symbol">:~</span></span></code></pre><p></p>
+
+<p></p><pre><code class="hljs ruby"><span class="hljs-variable"><span class="hljs-variable">$ </span></span>sudo scp -r /etc/kubernetes/pki sguyennet<span class="hljs-variable"><span class="hljs-variable">@10</span></span>.<span class="hljs-number"><span class="hljs-number">10.40</span></span>.<span class="hljs-number"><span class="hljs-number">92</span></span><span class="hljs-symbol"><span class="hljs-symbol">:~</span></span></code></pre><p></p>
+
+<h2 id="initializingthe10104091masternode">Initializing the 10.10.40.91 master node</h2>
+
+<p>1- SSH to the 10.10.40.91 machine.</p>
+
+<p></p><pre><code class="hljs ruby"><span class="hljs-variable"><span class="hljs-variable">$ </span></span>ssh sguyennet<span class="hljs-variable"><span class="hljs-variable">@10</span></span>.<span class="hljs-number"><span class="hljs-number">10.40</span></span>.<span class="hljs-number"><span class="hljs-number">91</span></span></code></pre><p></p>
+
+<p>2- Remove the apiserver.crt and apiserver.key.</p>
+
+<p></p><pre><code class="hljs ruby"><span class="hljs-variable"><span class="hljs-variable">$ </span></span>rm ~<span class="hljs-regexp"><span class="hljs-regexp">/pki/apiserver</span></span>.*</code></pre><p></p>
+
+<p>3- Move the certificates to the /etc/kubernetes directory.</p>
+
+<p></p><pre><code class="hljs ruby"><span class="hljs-variable"><span class="hljs-variable">$ </span></span>sudo mv ~<span class="hljs-regexp"><span class="hljs-regexp">/pki /etc</span></span><span class="hljs-regexp"><span class="hljs-regexp">/kubernetes/</span></span></code></pre><p></p>
+
+<p>4 - Create the configuration file for kubeadm.</p>
+
+<p></p><pre><code class="hljs javascript">$ vim config.yaml
+apiVersion: <a class="vglnk" href="http://kubeadm.k8s.io/v1alpha3" rel="nofollow"><span>kubeadm</span><span>.</span><span>k8s</span><span>.</span><span>io</span><span>/</span><span>v1alpha3</span></a>
+kind: ClusterConfiguration
+kubernetesVersion: stable
+apiServerCertSANs:
+- <span class="hljs-number"><span class="hljs-number">10.10</span></span><span class="hljs-number"><span class="hljs-number">.40</span></span><span class="hljs-number"><span class="hljs-number">.93</span></span>
+controlPlaneEndpoint: <span class="hljs-string"><span class="hljs-string">"10.10.40.93:6443"</span></span>
+etcd:
+  external:
+    endpoints:
+    - https:<span class="hljs-comment"><span class="hljs-comment">//10.10.40.90:2379</span></span>
+    - https:<span class="hljs-comment"><span class="hljs-comment">//10.10.40.91:2379</span></span>
+    - https:<span class="hljs-comment"><span class="hljs-comment">//10.10.40.92:2379</span></span>
+    caFile: <span class="hljs-regexp"><span class="hljs-regexp">/etc/</span></span>etcd/ca.pem
+    certFile: <span class="hljs-regexp"><span class="hljs-regexp">/etc/</span></span>etcd/kubernetes.pem
+    keyFile: <span class="hljs-regexp"><span class="hljs-regexp">/etc/</span></span>etcd/kubernetes-key.pem
+networking:
+  podSubnet: <span class="hljs-number"><span class="hljs-number">10.30</span></span><span class="hljs-number"><span class="hljs-number">.0</span></span><span class="hljs-number"><span class="hljs-number">.0</span></span>/<span class="hljs-number"><span class="hljs-number">24</span></span>
+apiServerExtraArgs:
+  apiserver-count: <span class="hljs-string"><span class="hljs-string">"3"</span></span></code></pre><p></p>
+
+<p>5- Initialize the machine as a master node.</p>
+
+<p></p><pre><code class="hljs bash">$ <span class="hljs-built_in"><span class="hljs-built_in">sudo</span></span> kubeadm init --config=config.yaml</code></pre><p></p>
+
+<h2 id="initializingthe10104092masternode">Initializing the 10.10.40.92 master node</h2>
+
+<p>1- SSH to the 10.10.40.92 machine.</p>
+
+<p></p><pre><code class="hljs ruby"><span class="hljs-variable"><span class="hljs-variable">$ </span></span>ssh sguyennet<span class="hljs-variable"><span class="hljs-variable">@10</span></span>.<span class="hljs-number"><span class="hljs-number">10.40</span></span>.<span class="hljs-number"><span class="hljs-number">92</span></span></code></pre><p></p>
+
+<p>2- Remove the apiserver.crt and apiserver.key.</p>
+
+<p></p><pre><code class="hljs ruby"><span class="hljs-variable"><span class="hljs-variable">$ </span></span>rm ~<span class="hljs-regexp"><span class="hljs-regexp">/pki/apiserver</span></span>.*</code></pre><p></p>
+
+<p>3- Move the certificates to the /etc/kubernetes directory.</p>
+
+<p></p><pre><code class="hljs ruby"><span class="hljs-variable"><span class="hljs-variable">$ </span></span>sudo mv ~<span class="hljs-regexp"><span class="hljs-regexp">/pki /etc</span></span><span class="hljs-regexp"><span class="hljs-regexp">/kubernetes/</span></span></code></pre><p></p>
+
+<p>4 - Create the configuration file for kubeadm.</p>
+
+<p></p><pre><code class="hljs javascript">$ vim config.yaml
+apiVersion: <a class="vglnk" href="http://kubeadm.k8s.io/v1alpha3" rel="nofollow"><span>kubeadm</span><span>.</span><span>k8s</span><span>.</span><span>io</span><span>/</span><span>v1alpha3</span></a>
+kind: ClusterConfiguration
+kubernetesVersion: stable
+apiServerCertSANs:
+- <span class="hljs-number"><span class="hljs-number">10.10</span></span><span class="hljs-number"><span class="hljs-number">.40</span></span><span class="hljs-number"><span class="hljs-number">.93</span></span>
+controlPlaneEndpoint: <span class="hljs-string"><span class="hljs-string">"10.10.40.93:6443"</span></span>
+etcd:
+  external:
+    endpoints:
+    - https:<span class="hljs-comment"><span class="hljs-comment">//10.10.40.90:2379</span></span>
+    - https:<span class="hljs-comment"><span class="hljs-comment">//10.10.40.91:2379</span></span>
+    - https:<span class="hljs-comment"><span class="hljs-comment">//10.10.40.92:2379</span></span>
+    caFile: <span class="hljs-regexp"><span class="hljs-regexp">/etc/</span></span>etcd/ca.pem
+    certFile: <span class="hljs-regexp"><span class="hljs-regexp">/etc/</span></span>etcd/kubernetes.pem
+    keyFile: <span class="hljs-regexp"><span class="hljs-regexp">/etc/</span></span>etcd/kubernetes-key.pem
+networking:
+  podSubnet: <span class="hljs-number"><span class="hljs-number">10.30</span></span><span class="hljs-number"><span class="hljs-number">.0</span></span><span class="hljs-number"><span class="hljs-number">.0</span></span>/<span class="hljs-number"><span class="hljs-number">24</span></span>
+apiServerExtraArgs:
+  apiserver-count: <span class="hljs-string"><span class="hljs-string">"3"</span></span></code></pre><p></p>
+
+<p>5- Initialize the machine as a master node.</p>
+
+<p></p><pre><code class="hljs bash">$ <span class="hljs-built_in"><span class="hljs-built_in">sudo</span></span> kubeadm init --config=config.yaml</code></pre><p></p>
+
+<p>6- Copy the "kubeadm join" command line printed as the result of the previous command.</p>
+
+<h1 id="initializingtheworkernodes">Initializing the worker nodes</h1>
+
+<h2 id="initializingthe101040100workernode">Initializing the 10.10.40.100 worker node</h2>
+
+<p>1- SSH to the 10.10.40.100 machine.</p>
+
+<p></p><pre><code class="hljs ruby"><span class="hljs-variable"><span class="hljs-variable">$ </span></span>ssh sguyennet<span class="hljs-variable"><span class="hljs-variable">@10</span></span>.<span class="hljs-number"><span class="hljs-number">10.40</span></span>.<span class="hljs-number"><span class="hljs-number">100</span></span></code></pre><p></p>
+
+<p>2- Execute the "kubeadm join" command that you copied from the last step of the initialization of the masters.</p>
+
+<p></p><pre><code class="hljs css">$ <span class="hljs-tag"><span class="hljs-tag">sudo</span></span> <span class="hljs-tag"><span class="hljs-tag">kubeadm</span></span> <span class="hljs-tag"><span class="hljs-tag">join</span></span> 10<span class="hljs-class"><span class="hljs-class">.10</span></span><span class="hljs-class"><span class="hljs-class">.40</span></span><span class="hljs-class"><span class="hljs-class">.93</span></span><span class="hljs-pseudo"><span class="hljs-pseudo">:6443</span></span> <span class="hljs-tag"><span class="hljs-tag">--token</span></span> <span class="hljs-attr_selector"><span class="hljs-attr_selector">[your</span></span><em><span class="hljs-attr_selector"><span class="hljs-attr_selector">token]</span></span> <span class="hljs-tag"><span class="hljs-tag">--discovery-token-ca-cert-hash</span></span> <span class="hljs-tag"><span class="hljs-tag">sha256</span></span>:<span class="hljs-attr_selector"><span class="hljs-attr_selector">[your</span></span></em><span class="hljs-attr_selector"><span class="hljs-attr_selector">token</span></span><em><span class="hljs-attr_selector"><span class="hljs-attr_selector">ca</span></span></em><span class="hljs-attr_selector"><span class="hljs-attr_selector">cert_hash]</span></span></code></pre><p></p>
+
+<h2 id="initializingthe101040101workernode">Initializing the 10.10.40.101 worker node</h2>
+
+<p>1- SSH to the 10.10.40.101 machine.</p>
+
+<p></p><pre><code class="hljs ruby"><span class="hljs-variable"><span class="hljs-variable">$ </span></span>ssh sguyennet<span class="hljs-variable"><span class="hljs-variable">@10</span></span>.<span class="hljs-number"><span class="hljs-number">10.40</span></span>.<span class="hljs-number"><span class="hljs-number">101</span></span></code></pre><p></p>
+
+<p>2- Execute the "kubeadm join" command that you copied from the last step of the masters initialization.</p>
+
+<p></p><pre><code class="hljs css">$ <span class="hljs-tag"><span class="hljs-tag">sudo</span></span> <span class="hljs-tag"><span class="hljs-tag">kubeadm</span></span> <span class="hljs-tag"><span class="hljs-tag">join</span></span> 10<span class="hljs-class"><span class="hljs-class">.10</span></span><span class="hljs-class"><span class="hljs-class">.40</span></span><span class="hljs-class"><span class="hljs-class">.93</span></span><span class="hljs-pseudo"><span class="hljs-pseudo">:6443</span></span> <span class="hljs-tag"><span class="hljs-tag">--token</span></span> <span class="hljs-attr_selector"><span class="hljs-attr_selector">[your</span></span><em><span class="hljs-attr_selector"><span class="hljs-attr_selector">token]</span></span> <span class="hljs-tag"><span class="hljs-tag">--discovery-token-ca-cert-hash</span></span> <span class="hljs-tag"><span class="hljs-tag">sha256</span></span>:<span class="hljs-attr_selector"><span class="hljs-attr_selector">[your</span></span></em><span class="hljs-attr_selector"><span class="hljs-attr_selector">token</span></span><em><span class="hljs-attr_selector"><span class="hljs-attr_selector">ca</span></span></em><span class="hljs-attr_selector"><span class="hljs-attr_selector">cert_hash]</span></span></code></pre><p></p>
+
+<h2 id="initializingthe101040102workernode">Initializing the 10.10.40.102 worker node</h2>
+
+<p>1- SSH to the 10.10.40.102 machine.</p>
+
+<p></p><pre><code class="hljs ruby"><span class="hljs-variable"><span class="hljs-variable">$ </span></span>ssh sguyennet<span class="hljs-variable"><span class="hljs-variable">@10</span></span>.<span class="hljs-number"><span class="hljs-number">10.40</span></span>.<span class="hljs-number"><span class="hljs-number">102</span></span></code></pre><p></p>
+
+<p>2- Execute the "kubeadm join" command that you copied from the last step of the masters initialization.</p>
+
+<p></p><pre><code class="hljs css">$ <span class="hljs-tag"><span class="hljs-tag">sudo</span></span> <span class="hljs-tag"><span class="hljs-tag">kubeadm</span></span> <span class="hljs-tag"><span class="hljs-tag">join</span></span> 10<span class="hljs-class"><span class="hljs-class">.10</span></span><span class="hljs-class"><span class="hljs-class">.40</span></span><span class="hljs-class"><span class="hljs-class">.93</span></span><span class="hljs-pseudo"><span class="hljs-pseudo">:6443</span></span> <span class="hljs-tag"><span class="hljs-tag">--token</span></span> <span class="hljs-attr_selector"><span class="hljs-attr_selector">[your</span></span><em><span class="hljs-attr_selector"><span class="hljs-attr_selector">token]</span></span> <span class="hljs-tag"><span class="hljs-tag">--discovery-token-ca-cert-hash</span></span> <span class="hljs-tag"><span class="hljs-tag">sha256</span></span>:<span class="hljs-attr_selector"><span class="hljs-attr_selector">[your</span></span></em><span class="hljs-attr_selector"><span class="hljs-attr_selector">token</span></span><em><span class="hljs-attr_selector"><span class="hljs-attr_selector">ca</span></span></em><span class="hljs-attr_selector"><span class="hljs-attr_selector">cert_hash]</span></span></code></pre><p></p>
+
+<h1 id="verifyingthattheworkersjoinedthecluster">Verifying that the workers joined the cluster</h1>
+
+<p>1- SSH to one of the master node.</p>
+
+<p></p><pre><code class="hljs ruby"><span class="hljs-variable"><span class="hljs-variable">$ </span></span>ssh sguyennet<span class="hljs-variable"><span class="hljs-variable">@10</span></span>.<span class="hljs-number"><span class="hljs-number">10.40</span></span>.<span class="hljs-number"><span class="hljs-number">90</span></span></code></pre><p></p>
+
+<p>2- Get the list of the nodes.</p>
+
+<p></p><pre><code class="hljs bash">$ <span class="hljs-built_in"><span class="hljs-built_in">sudo</span></span> kubectl --kubeconfig /etc/kubernetes/admin.conf get nodes
+NAME STATUS ROLES AGE VERSION
+k8s-kubeadm-master-<span class="hljs-number"><span class="hljs-number">0</span></span> NotReady master <span class="hljs-number"><span class="hljs-number">1</span></span>h v1.<span class="hljs-number"><span class="hljs-number">12.1</span></span>
+k8s-kubeadm-master-<span class="hljs-number"><span class="hljs-number">1</span></span> NotReady master <span class="hljs-number"><span class="hljs-number">1</span></span>h v1.<span class="hljs-number"><span class="hljs-number">12.1</span></span>
+k8s-kubeadm-master-<span class="hljs-number"><span class="hljs-number">2</span></span> NotReady master <span class="hljs-number"><span class="hljs-number">1</span></span>h v1.<span class="hljs-number"><span class="hljs-number">12.1</span></span>
+k8s-kubeadm-worker-<span class="hljs-number"><span class="hljs-number">0</span></span> NotReady <none> <span class="hljs-number"><span class="hljs-number">2</span></span>m v1.<span class="hljs-number"><span class="hljs-number">12.1</span></span>
+k8s-kubeadm-worker-<span class="hljs-number"><span class="hljs-number">1</span></span> NotReady <none> <span class="hljs-number"><span class="hljs-number">1</span></span>m v1.<span class="hljs-number"><span class="hljs-number">12.1</span></span>
+k8s-kubeadm-worker-<span class="hljs-number"><span class="hljs-number">2</span></span> NotReady <none> <span class="hljs-number"><span class="hljs-number">1</span></span>m v1.<span class="hljs-number"><span class="hljs-number">12.1</span></span>
+</none></none></none></code></pre><p></p>
+
+<p>The status of the nodes is NotReady as we haven't configured the networking overlay yet.</p>
+
+<h1 id="configuringkubectlontheclientmachine">Configuring kubectl on the client machine</h1>
+
+<p>1- SSH to one of the master node.</p>
+
+<p></p><pre><code class="hljs ruby"><span class="hljs-variable"><span class="hljs-variable">$ </span></span>ssh sguyennet<span class="hljs-variable"><span class="hljs-variable">@10</span></span>.<span class="hljs-number"><span class="hljs-number">10.40</span></span>.<span class="hljs-number"><span class="hljs-number">90</span></span></code></pre><p></p>
+
+<p>2- Add permissions to the admin.conf file.</p>
+
+<p></p><pre><code class="hljs bash">$ <span class="hljs-built_in"><span class="hljs-built_in">sudo</span></span> chmod +r /etc/kubernetes/admin.conf</code></pre><p></p>
+
+<p>3- From the client machine, copy the configuration file.</p>
+
+<p></p><pre><code class="hljs ruby"><span class="hljs-variable"><span class="hljs-variable">$ </span></span>scp sguyennet<span class="hljs-variable"><span class="hljs-variable">@10</span></span>.<span class="hljs-number"><span class="hljs-number">10.40</span></span>.<span class="hljs-number"><span class="hljs-number">90</span></span><span class="hljs-symbol"><span class="hljs-symbol">:/etc/kubernetes/admin</span></span>.conf .</code></pre><p></p>
+
+<p>4- Create the kubectl configuration directory.</p>
+
+<p></p><pre><code class="hljs perl">$ <span class="hljs-keyword"><span class="hljs-keyword">mkdir</span></span> ~<span class="hljs-regexp"><span class="hljs-regexp">/.kube</span></span></code></pre><p></p>
+
+<p>5- Move the configuration file to the configuration directory.</p>
+
+<p></p><pre><code class="hljs ruby"><span class="hljs-variable"><span class="hljs-variable">$ </span></span>mv admin.conf ~<span class="hljs-regexp"><span class="hljs-regexp">/.kube/config</span></span></code></pre><p></p>
+
+<p>6- Modify the permissions of the configuration file.</p>
+
+<p></p><pre><code class="hljs ruby"><span class="hljs-variable"><span class="hljs-variable">$ </span></span>chmod <span class="hljs-number"><span class="hljs-number">600</span></span> ~<span class="hljs-regexp"><span class="hljs-regexp">/.kube/config</span></span></code></pre><p></p>
+
+<p>7- Go back to the SSH session on the master and change back the permissions of the configuration file.</p>
+
+<p></p><pre><code class="hljs bash">$ <span class="hljs-built_in"><span class="hljs-built_in">sudo</span></span> chmod <span class="hljs-number"><span class="hljs-number">600</span></span> /etc/kubernetes/admin.conf</code></pre><p></p>
+
+<p>8- check that you can access the Kubernetes API from the client machine.</p>
+
+<p></p><pre><code class="hljs cs">$ kubectl <span class="hljs-keyword"><span class="hljs-keyword">get</span></span> nodes</code></pre><p></p>
+
+<h1 id="deployingtheoverlaynetwork">Deploying the overlay network</h1>
+
+<p>We are going to use Weavenet as the overlay network. You can also use static route or another overlay network tool like Calico or Flannel.</p>
+
+<p>1- Deploy the overlay network pods from the client machine.</p>
+
+<p></p><pre><code class="hljs ruby"><span class="hljs-variable"><span class="hljs-variable">$ </span></span>kubectl apply -f <span class="hljs-symbol"><span class="hljs-symbol">https:</span></span>/<span class="hljs-regexp"><span class="hljs-regexp">/</span><a class="vglnk" href="http://git.io/weave" rel="nofollow"><span><span class="hljs-regexp">git</span></span><span><span class="hljs-regexp">.</span></span><span><span class="hljs-regexp">io</span></span><span><span class="hljs-regexp">/</span></span><span><span class="hljs-regexp">weave</span></span></a></span>-kube-<span class="hljs-number"><span class="hljs-number">1.6</span></span></code></pre><p></p>
+
+<p>2- Check that the pods are deployed properly.</p>
+
+<p></p><pre><code class="hljs cs">$ kubectl <span class="hljs-keyword"><span class="hljs-keyword">get</span></span> pods -n kube-system</code></pre><p></p>
+
+<p>3- Check that the nodes are in Ready state.</p>
+
+<p></p><pre><code class="hljs cs">$ kubectl <span class="hljs-keyword"><span class="hljs-keyword">get</span></span> nodes
+NAME STATUS ROLES AGE VERSION
+k8s-kubeadm-master-<span class="hljs-number"><span class="hljs-number">0</span></span> Ready master <span class="hljs-number"><span class="hljs-number">18</span></span>h v1<span class="hljs-number"><span class="hljs-number">.12</span></span><span class="hljs-number"><span class="hljs-number">.1</span></span>
+k8s-kubeadm-master-<span class="hljs-number"><span class="hljs-number">1</span></span> Ready master <span class="hljs-number"><span class="hljs-number">18</span></span>h v1<span class="hljs-number"><span class="hljs-number">.12</span></span><span class="hljs-number"><span class="hljs-number">.1</span></span>
+k8s-kubeadm-master-<span class="hljs-number"><span class="hljs-number">2</span></span> Ready master <span class="hljs-number"><span class="hljs-number">18</span></span>h v1<span class="hljs-number"><span class="hljs-number">.12</span></span><span class="hljs-number"><span class="hljs-number">.1</span></span>
+k8s-kubeadm-worker-<span class="hljs-number"><span class="hljs-number">0</span></span> Ready <none> <span class="hljs-number"><span class="hljs-number">16</span></span>h v1<span class="hljs-number"><span class="hljs-number">.12</span></span><span class="hljs-number"><span class="hljs-number">.1</span></span>
+k8s-kubeadm-worker-<span class="hljs-number"><span class="hljs-number">1</span></span> Ready <none> <span class="hljs-number"><span class="hljs-number">16</span></span>h v1<span class="hljs-number"><span class="hljs-number">.12</span></span><span class="hljs-number"><span class="hljs-number">.1</span></span>
+k8s-kubeadm-worker-<span class="hljs-number"><span class="hljs-number">2</span></span> Ready <none> <span class="hljs-number"><span class="hljs-number">16</span></span>h v1<span class="hljs-number"><span class="hljs-number">.12</span></span><span class="hljs-number"><span class="hljs-number">.1</span></span>
+</none></none></none></code></pre><p></p>
+
+<h1 id="installingkubernetesaddons">Installing Kubernetes add-ons</h1>
+
+<p>We will deploy two Kubernetes add-ons on our new cluster: the dashboard add-on to have a graphical view of the cluster, and the Heapster add-on to monitor our workload.</p>
+
+<h2 id="installingthekubernetesdashboard">Installing the Kubernetes dashboard</h2>
+
+<p>1- Create the Kubernetes dashboard manifest.</p>
+
+<p></p><pre><code class="hljs sql">$ vim kubernetes-dashboard.yaml
+# Copyright 2017 The Kubernetes Authors.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not <span class="hljs-operator"><span class="hljs-keyword"><span class="hljs-operator"><span class="hljs-keyword">use</span></span></span><span class="hljs-operator"> this file </span><span class="hljs-keyword"><span class="hljs-operator"><span class="hljs-keyword">except</span></span></span><span class="hljs-operator"> </span><span class="hljs-keyword"><span class="hljs-operator"><span class="hljs-keyword">in</span></span></span><span class="hljs-operator"> compliance </span><span class="hljs-keyword"><span class="hljs-operator"><span class="hljs-keyword">with</span></span></span><span class="hljs-operator"> the License.
+# You may obtain a copy </span><span class="hljs-keyword"><span class="hljs-operator"><span class="hljs-keyword">of</span></span></span><span class="hljs-operator"> the License </span><span class="hljs-keyword"><span class="hljs-operator"><span class="hljs-keyword">at</span></span></span><span class="hljs-operator">
+#
+#     </span><a class="vglnk" href="http://www.apache.org/licenses/LICENSE-" rel="nofollow"><span><span class="hljs-operator">http</span></span><span><span class="hljs-operator">://</span></span><span><span class="hljs-operator">www</span></span><span><span class="hljs-operator">.</span></span><span><span class="hljs-operator">apache</span></span><span><span class="hljs-operator">.</span></span><span><span class="hljs-operator">org</span></span><span><span class="hljs-operator">/</span></span><span><span class="hljs-operator">licenses</span></span><span><span class="hljs-operator">/</span></span><span><span class="hljs-operator">LICENSE</span></span><span><span class="hljs-operator">-</span></span></a><span class="hljs-number"><span class="hljs-operator"><span class="hljs-number">2.0</span></span></span><span class="hljs-operator">
+#
+# Unless required </span><span class="hljs-keyword"><span class="hljs-operator"><span class="hljs-keyword">by</span></span></span><span class="hljs-operator"> applicable law </span><span class="hljs-keyword"><span class="hljs-operator"><span class="hljs-keyword">or</span></span></span><span class="hljs-operator"> agreed </span><span class="hljs-keyword"><span class="hljs-operator"><span class="hljs-keyword">to</span></span></span><span class="hljs-operator"> </span><span class="hljs-keyword"><span class="hljs-operator"><span class="hljs-keyword">in</span></span></span><span class="hljs-operator"> writing, software
+# distributed under the License </span><span class="hljs-keyword"><span class="hljs-operator"><span class="hljs-keyword">is</span></span></span><span class="hljs-operator"> distributed </span><span class="hljs-keyword"><span class="hljs-operator"><span class="hljs-keyword">on</span></span></span><span class="hljs-operator"> an </span><span class="hljs-string"><span class="hljs-operator"><span class="hljs-string">"AS IS"</span></span></span><span class="hljs-operator"> BASIS,
+# WITHOUT WARRANTIES </span><span class="hljs-keyword"><span class="hljs-operator"><span class="hljs-keyword">OR</span></span></span><span class="hljs-operator"> CONDITIONS </span><span class="hljs-keyword"><span class="hljs-operator"><span class="hljs-keyword">OF</span></span></span><span class="hljs-operator"> </span><span class="hljs-keyword"><span class="hljs-operator"><span class="hljs-keyword">ANY</span></span></span><span class="hljs-operator"> KIND, either express </span><span class="hljs-keyword"><span class="hljs-operator"><span class="hljs-keyword">or</span></span></span><span class="hljs-operator"> implied.
+# See the License </span><span class="hljs-keyword"><span class="hljs-operator"><span class="hljs-keyword">for</span></span></span><span class="hljs-operator"> the specific </span><span class="hljs-keyword"><span class="hljs-operator"><span class="hljs-keyword">language</span></span></span><span class="hljs-operator"> governing permissions </span><span class="hljs-keyword"><span class="hljs-operator"><span class="hljs-keyword">and</span></span></span><span class="hljs-operator">
+# limitations under the License.</span></span><p></p><span class="hljs-operator"><span class="hljs-operator">
+
+</span></span><p><span class="hljs-operator"><span class="hljs-operator"># Configuration </span><span class="hljs-keyword"><span class="hljs-operator"><span class="hljs-keyword">to</span></span></span><span class="hljs-operator"> deploy </span><span class="hljs-keyword"><span class="hljs-operator"><span class="hljs-keyword">release</span></span></span><span class="hljs-operator"> </span><span class="hljs-keyword"><span class="hljs-operator"><span class="hljs-keyword">version</span></span></span><span class="hljs-operator"> </span><span class="hljs-keyword"><span class="hljs-operator"><span class="hljs-keyword">of</span></span></span><span class="hljs-operator"> the Dashboard UI compatible </span><span class="hljs-keyword"><span class="hljs-operator"><span class="hljs-keyword">with</span></span></span><span class="hljs-operator">
+# Kubernetes </span><span class="hljs-number"><span class="hljs-operator"><span class="hljs-number">1.8</span></span></span><span class="hljs-operator">.
+#
+# Example </span><span class="hljs-keyword"><span class="hljs-operator"><span class="hljs-keyword">usage</span></span></span><span class="hljs-operator">: kubectl </span><span class="hljs-keyword"><span class="hljs-operator"><span class="hljs-keyword">create</span></span></span><span class="hljs-operator"> -f </span></span><this_file><span class="hljs-operator"><span class="hljs-operator">
+# </span><span class="hljs-comment"><span class="hljs-operator"><span class="hljs-comment">------------------- Dashboard Secret ------------------- #</span></span></span><span class="hljs-operator">
+apiVersion: v1
+kind: Secret
+metadata:
+  labels:
+    k8s-app: kubernetes-dashboard
+  name: kubernetes-dashboard-certs
+  namespace: kube-system
+type: Opaque
+</span><span class="hljs-comment"><span class="hljs-operator"><span class="hljs-comment">---</span></span></span><span class="hljs-operator">
+# </span><span class="hljs-comment"><span class="hljs-operator"><span class="hljs-comment">------------------- Dashboard Service Account ------------------- #</span></span></span><span class="hljs-operator">
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  labels:
+    k8s-app: kubernetes-dashboard
+  name: kubernetes-dashboard
+  namespace: kube-system
+</span><span class="hljs-comment"><span class="hljs-operator"><span class="hljs-comment">---</span></span></span><span class="hljs-operator">
+# </span><span class="hljs-comment"><span class="hljs-operator"><span class="hljs-comment">------------------- Dashboard Role &amp; Role Binding ------------------- #</span></span></span><span class="hljs-operator">
+kind: Role
+apiVersion: rbac.</span><span class="hljs-keyword"><span class="hljs-operator"><span class="hljs-keyword">authorization</span></span></span><span class="hljs-operator">.</span><a class="vglnk" href="http://k8s.io/v1" rel="nofollow"><span><span class="hljs-operator">k8s</span></span><span><span class="hljs-operator">.</span></span><span><span class="hljs-operator">io</span></span><span><span class="hljs-operator">/</span></span><span><span class="hljs-operator">v1</span></span></a><span class="hljs-operator">
+metadata:
+  name: kubernetes-dashboard-minimal
+  namespace: kube-system
+rules:
+  # Allow Dashboard </span><span class="hljs-keyword"><span class="hljs-operator"><span class="hljs-keyword">to</span></span></span><span class="hljs-operator"> </span><span class="hljs-keyword"><span class="hljs-operator"><span class="hljs-keyword">create</span></span></span><span class="hljs-operator"> </span><span class="hljs-string"><span class="hljs-operator"><span class="hljs-string">'kubernetes-dashboard-key-holder'</span></span></span><span class="hljs-operator"> secret.
+- apiGroups: [</span><span class="hljs-string"><span class="hljs-operator"><span class="hljs-string">""</span></span></span><span class="hljs-operator">]
+  resources: [</span><span class="hljs-string"><span class="hljs-operator"><span class="hljs-string">"secrets"</span></span></span><span class="hljs-operator">]
+  verbs: [</span><span class="hljs-string"><span class="hljs-operator"><span class="hljs-string">"create"</span></span></span><span class="hljs-operator">]
+  # Allow Dashboard </span><span class="hljs-keyword"><span class="hljs-operator"><span class="hljs-keyword">to</span></span></span><span class="hljs-operator"> </span><span class="hljs-keyword"><span class="hljs-operator"><span class="hljs-keyword">create</span></span></span><span class="hljs-operator"> </span><span class="hljs-string"><span class="hljs-operator"><span class="hljs-string">'kubernetes-dashboard-settings'</span></span></span><span class="hljs-operator"> config map.
+- apiGroups: [</span><span class="hljs-string"><span class="hljs-operator"><span class="hljs-string">""</span></span></span><span class="hljs-operator">]
+  resources: [</span><span class="hljs-string"><span class="hljs-operator"><span class="hljs-string">"configmaps"</span></span></span><span class="hljs-operator">]
+  verbs: [</span><span class="hljs-string"><span class="hljs-operator"><span class="hljs-string">"create"</span></span></span><span class="hljs-operator">]
+  # Allow Dashboard </span><span class="hljs-keyword"><span class="hljs-operator"><span class="hljs-keyword">to</span></span></span><span class="hljs-operator"> </span><span class="hljs-keyword"><span class="hljs-operator"><span class="hljs-keyword">get</span></span></span><span class="hljs-operator">, </span><span class="hljs-keyword"><span class="hljs-operator"><span class="hljs-keyword">update</span></span></span><span class="hljs-operator"> </span><span class="hljs-keyword"><span class="hljs-operator"><span class="hljs-keyword">and</span></span></span><span class="hljs-operator"> </span><span class="hljs-keyword"><span class="hljs-operator"><span class="hljs-keyword">delete</span></span></span><span class="hljs-operator"> Dashboard exclusive secrets.
+- apiGroups: [</span><span class="hljs-string"><span class="hljs-operator"><span class="hljs-string">""</span></span></span><span class="hljs-operator">]
+  resources: [</span><span class="hljs-string"><span class="hljs-operator"><span class="hljs-string">"secrets"</span></span></span><span class="hljs-operator">]
+  resourceNames: [</span><span class="hljs-string"><span class="hljs-operator"><span class="hljs-string">"kubernetes-dashboard-key-holder"</span></span></span><span class="hljs-operator">, </span><span class="hljs-string"><span class="hljs-operator"><span class="hljs-string">"kubernetes-dashboard-certs"</span></span></span><span class="hljs-operator">]
+  verbs: [</span><span class="hljs-string"><span class="hljs-operator"><span class="hljs-string">"get"</span></span></span><span class="hljs-operator">, </span><span class="hljs-string"><span class="hljs-operator"><span class="hljs-string">"update"</span></span></span><span class="hljs-operator">, </span><span class="hljs-string"><span class="hljs-operator"><span class="hljs-string">"delete"</span></span></span><span class="hljs-operator">]
+  # Allow Dashboard </span><span class="hljs-keyword"><span class="hljs-operator"><span class="hljs-keyword">to</span></span></span><span class="hljs-operator"> </span><span class="hljs-keyword"><span class="hljs-operator"><span class="hljs-keyword">get</span></span></span><span class="hljs-operator"> </span><span class="hljs-keyword"><span class="hljs-operator"><span class="hljs-keyword">and</span></span></span><span class="hljs-operator"> </span><span class="hljs-keyword"><span class="hljs-operator"><span class="hljs-keyword">update</span></span></span><span class="hljs-operator"> </span><span class="hljs-string"><span class="hljs-operator"><span class="hljs-string">'kubernetes-dashboard-settings'</span></span></span><span class="hljs-operator"> config map.
+- apiGroups: [</span><span class="hljs-string"><span class="hljs-operator"><span class="hljs-string">""</span></span></span><span class="hljs-operator">]
+  resources: [</span><span class="hljs-string"><span class="hljs-operator"><span class="hljs-string">"configmaps"</span></span></span><span class="hljs-operator">]
+  resourceNames: [</span><span class="hljs-string"><span class="hljs-operator"><span class="hljs-string">"kubernetes-dashboard-settings"</span></span></span><span class="hljs-operator">]
+  verbs: [</span><span class="hljs-string"><span class="hljs-operator"><span class="hljs-string">"get"</span></span></span><span class="hljs-operator">, </span><span class="hljs-string"><span class="hljs-operator"><span class="hljs-string">"update"</span></span></span><span class="hljs-operator">]
+  # Allow Dashboard </span><span class="hljs-keyword"><span class="hljs-operator"><span class="hljs-keyword">to</span></span></span><span class="hljs-operator"> </span><span class="hljs-keyword"><span class="hljs-operator"><span class="hljs-keyword">get</span></span></span><span class="hljs-operator"> metrics </span><span class="hljs-keyword"><span class="hljs-operator"><span class="hljs-keyword">from</span></span></span><span class="hljs-operator"> heapster.
+- apiGroups: [</span><span class="hljs-string"><span class="hljs-operator"><span class="hljs-string">""</span></span></span><span class="hljs-operator">]
+  resources: [</span><span class="hljs-string"><span class="hljs-operator"><span class="hljs-string">"services"</span></span></span><span class="hljs-operator">]
+  resourceNames: [</span><span class="hljs-string"><span class="hljs-operator"><span class="hljs-string">"heapster"</span></span></span><span class="hljs-operator">]
+  verbs: [</span><span class="hljs-string"><span class="hljs-operator"><span class="hljs-string">"proxy"</span></span></span><span class="hljs-operator">]
+- apiGroups: [</span><span class="hljs-string"><span class="hljs-operator"><span class="hljs-string">""</span></span></span><span class="hljs-operator">]
+  resources: [</span><span class="hljs-string"><span class="hljs-operator"><span class="hljs-string">"services/proxy"</span></span></span><span class="hljs-operator">]
+  resourceNames: [</span><span class="hljs-string"><span class="hljs-operator"><span class="hljs-string">"heapster"</span></span></span><span class="hljs-operator">, </span><span class="hljs-string"><span class="hljs-operator"><span class="hljs-string">"http:heapster:"</span></span></span><span class="hljs-operator">, </span><span class="hljs-string"><span class="hljs-operator"><span class="hljs-string">"https:heapster:"</span></span></span><span class="hljs-operator">]
+  verbs: [</span><span class="hljs-string"><span class="hljs-operator"><span class="hljs-string">"get"</span></span></span><span class="hljs-operator">]
+</span><span class="hljs-comment"><span class="hljs-operator"><span class="hljs-comment">---</span></span></span><span class="hljs-operator">
+apiVersion: rbac.</span><span class="hljs-keyword"><span class="hljs-operator"><span class="hljs-keyword">authorization</span></span></span><span class="hljs-operator">.</span><a class="vglnk" href="http://k8s.io/v1" rel="nofollow"><span><span class="hljs-operator">k8s</span></span><span><span class="hljs-operator">.</span></span><span><span class="hljs-operator">io</span></span><span><span class="hljs-operator">/</span></span><span><span class="hljs-operator">v1</span></span></a><span class="hljs-operator">
+kind: RoleBinding
+metadata:
+  name: kubernetes-dashboard-minimal
+  namespace: kube-system
+roleRef:
+  apiGroup: rbac.</span><span class="hljs-keyword"><span class="hljs-operator"><span class="hljs-keyword">authorization</span></span></span><span class="hljs-operator">.k8s.io
+  kind: Role
+  name: kubernetes-dashboard-minimal
+subjects:
+- kind: ServiceAccount
+  name: kubernetes-dashboard
+  namespace: kube-system
+</span><span class="hljs-comment"><span class="hljs-operator"><span class="hljs-comment">---</span></span></span><span class="hljs-operator">
+# </span><span class="hljs-comment"><span class="hljs-operator"><span class="hljs-comment">------------------- Dashboard Deployment ------------------- #</span></span></span><span class="hljs-operator">
+kind: Deployment
+apiVersion: apps/v1beta2
+metadata:
+  labels:
+    k8s-app: kubernetes-dashboard
+  name: kubernetes-dashboard
+  namespace: kube-system
+spec:
+  replicas: </span><span class="hljs-number"><span class="hljs-operator"><span class="hljs-number">1</span></span></span><span class="hljs-operator">
+  revisionHistoryLimit: </span><span class="hljs-number"><span class="hljs-operator"><span class="hljs-number">10</span></span></span><span class="hljs-operator">
+  selector:
+    matchLabels:
+      k8s-app: kubernetes-dashboard
+  template:
+    metadata:
+      labels:
+        k8s-app: kubernetes-dashboard
+    spec:
+      containers:
+      - name: kubernetes-dashboard
+        image: </span><a class="vglnk" href="http://k8s.gcr.io/kubernetes-dashboard-amd64:v1" rel="nofollow"><span><span class="hljs-operator">k8s</span></span><span><span class="hljs-operator">.</span></span><span><span class="hljs-operator">gcr</span></span><span><span class="hljs-operator">.</span></span><span><span class="hljs-operator">io</span></span><span><span class="hljs-operator">/</span></span><span><span class="hljs-operator">kubernetes</span></span><span><span class="hljs-operator">-</span></span><span><span class="hljs-operator">dashboard</span></span><span><span class="hljs-operator">-</span></span><span><span class="hljs-operator">amd64</span></span><span><span class="hljs-operator">:</span></span><span><span class="hljs-operator">v1</span></span></a><span class="hljs-number"><span class="hljs-operator"><span class="hljs-number">.8</span></span></span><span class="hljs-number"><span class="hljs-operator"><span class="hljs-number">.3</span></span></span><span class="hljs-operator">
+        ports:
+        - containerPort: </span><span class="hljs-number"><span class="hljs-operator"><span class="hljs-number">8443</span></span></span><span class="hljs-operator">
+          protocol: TCP
+        args:
+          - </span><span class="hljs-comment"><span class="hljs-operator"><span class="hljs-comment">--auto-generate-certificates</span></span></span><span class="hljs-operator">
+          # Uncomment the following line </span><span class="hljs-keyword"><span class="hljs-operator"><span class="hljs-keyword">to</span></span></span><span class="hljs-operator"> manually specify Kubernetes API </span><span class="hljs-keyword"><span class="hljs-operator"><span class="hljs-keyword">server</span></span></span><span class="hljs-operator"> Host
+          # </span><span class="hljs-keyword"><span class="hljs-operator"><span class="hljs-keyword">If</span></span></span><span class="hljs-operator"> </span><span class="hljs-keyword"><span class="hljs-operator"><span class="hljs-keyword">not</span></span></span><span class="hljs-operator"> specified, Dashboard will attempt </span><span class="hljs-keyword"><span class="hljs-operator"><span class="hljs-keyword">to</span></span></span><span class="hljs-operator"> auto discover the API </span><span class="hljs-keyword"><span class="hljs-operator"><span class="hljs-keyword">server</span></span></span><span class="hljs-operator"> </span><span class="hljs-keyword"><span class="hljs-operator"><span class="hljs-keyword">and</span></span></span><span class="hljs-operator"> </span><span class="hljs-keyword"><span class="hljs-operator"><span class="hljs-keyword">connect</span></span></span><span class="hljs-operator">
+          # </span><span class="hljs-keyword"><span class="hljs-operator"><span class="hljs-keyword">to</span></span></span><span class="hljs-operator"> it. Uncomment </span><span class="hljs-keyword"><span class="hljs-operator"><span class="hljs-keyword">only</span></span></span><span class="hljs-operator"> </span><span class="hljs-keyword"><span class="hljs-operator"><span class="hljs-keyword">if</span></span></span><span class="hljs-operator"> the </span><span class="hljs-keyword"><span class="hljs-operator"><span class="hljs-keyword">default</span></span></span><span class="hljs-operator"> does </span><span class="hljs-keyword"><span class="hljs-operator"><span class="hljs-keyword">not</span></span></span><span class="hljs-operator"> </span><span class="hljs-keyword"><span class="hljs-operator"><span class="hljs-keyword">work</span></span></span><span class="hljs-operator">.
+          # - </span><span class="hljs-comment"><span class="hljs-operator"><span class="hljs-comment">--apiserver-host=</span></span><a class="vglnk" href="http://my-address:port/" rel="nofollow"><span><span class="hljs-operator"><span class="hljs-comment">http</span></span></span><span><span class="hljs-operator"><span class="hljs-comment">://</span></span></span><span><span class="hljs-operator"><span class="hljs-comment">my</span></span></span><span><span class="hljs-operator"><span class="hljs-comment">-</span></span></span><span><span class="hljs-operator"><span class="hljs-comment">address</span></span></span><span><span class="hljs-operator"><span class="hljs-comment">:</span></span></span><span><span class="hljs-operator"><span class="hljs-comment">port</span></span></span></a></span><span class="hljs-operator">
+        volumeMounts:
+        - name: kubernetes-dashboard-certs
+          mountPath: /certs
+          # </span><span class="hljs-keyword"><span class="hljs-operator"><span class="hljs-keyword">Create</span></span></span><span class="hljs-operator"> </span><span class="hljs-keyword"><span class="hljs-operator"><span class="hljs-keyword">on</span></span></span><span class="hljs-operator">-disk volume </span><span class="hljs-keyword"><span class="hljs-operator"><span class="hljs-keyword">to</span></span></span><span class="hljs-operator"> store </span><span class="hljs-keyword"><span class="hljs-operator"><span class="hljs-keyword">exec</span></span></span><span class="hljs-operator"> </span><span class="hljs-keyword"><span class="hljs-operator"><span class="hljs-keyword">logs</span></span></span><span class="hljs-operator">
+        - mountPath: /tmp
+          name: tmp-volume
+        livenessProbe:
+          httpGet:
+            scheme: HTTPS
+            path: /
+            port: </span><span class="hljs-number"><span class="hljs-operator"><span class="hljs-number">8443</span></span></span><span class="hljs-operator">
+          initialDelaySeconds: </span><span class="hljs-number"><span class="hljs-operator"><span class="hljs-number">30</span></span></span><span class="hljs-operator">
+          timeoutSeconds: </span><span class="hljs-number"><span class="hljs-operator"><span class="hljs-number">30</span></span></span><span class="hljs-operator">
+      volumes:
+      - name: kubernetes-dashboard-certs
+        secret:
+          secretName: kubernetes-dashboard-certs
+      - name: tmp-volume
+        emptyDir: {}
+      serviceAccountName: kubernetes-dashboard
+      # Comment the following tolerations </span><span class="hljs-keyword"><span class="hljs-operator"><span class="hljs-keyword">if</span></span></span><span class="hljs-operator"> Dashboard must </span><span class="hljs-keyword"><span class="hljs-operator"><span class="hljs-keyword">not</span></span></span><span class="hljs-operator"> be deployed </span><span class="hljs-keyword"><span class="hljs-operator"><span class="hljs-keyword">on</span></span></span><span class="hljs-operator"> </span><span class="hljs-keyword"><span class="hljs-operator"><span class="hljs-keyword">master</span></span></span><span class="hljs-operator">
+      tolerations:
+      - </span><span class="hljs-keyword"><span class="hljs-operator"><span class="hljs-keyword">key</span></span></span><span class="hljs-operator">: node-role.kubernetes.io/</span><span class="hljs-keyword"><span class="hljs-operator"><span class="hljs-keyword">master</span></span></span><span class="hljs-operator">
+        effect: NoSchedule
+</span><span class="hljs-comment"><span class="hljs-operator"><span class="hljs-comment">---</span></span></span><span class="hljs-operator">
+# </span><span class="hljs-comment"><span class="hljs-operator"><span class="hljs-comment">------------------- Dashboard Service ------------------- #</span></span></span><span class="hljs-operator">
+kind: Service
+apiVersion: v1
+metadata:
+  labels:
+    k8s-app: kubernetes-dashboard
+  name: kubernetes-dashboard
+  namespace: kube-system
+spec:
+  ports:
+    - port: </span><span class="hljs-number"><span class="hljs-operator"><span class="hljs-number">443</span></span></span><span class="hljs-operator">
+      targetPort: </span><span class="hljs-number"><span class="hljs-operator"><span class="hljs-number">8443</span></span></span><span class="hljs-operator">
+  selector:
+    k8s-app: kubernetes-dashboard
+</span></span></this_file></p></code></pre><p></p>
+
+<p>2- Deploy the dashboard.</p>
+
+<p></p><pre><code class="hljs bash">$ kubectl create <span class="hljs-operator"><span class="hljs-operator">-f</span></span> kubernetes-dashboard.yaml</code></pre><p></p>
+
+<h2 id="installingheapster">Installing Heapster</h2>
+
+<p>1- Create a manifest for Heapster.</p>
+
+<p></p><pre><code class="hljs sql">$ vim heapster.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: heapster
+  namespace: kube-system
+<span class="hljs-comment"><span class="hljs-comment">---</span></span>
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: heapster
+  namespace: kube-system
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        task: monitoring
+        k8s-app: heapster
+    spec:
+      serviceAccountName: heapster
+      containers:
+      - name: heapster
+        image: <a class="vglnk" href="http://gcr.io/google_containers/heapster-amd64:v1.4.2" rel="nofollow"><span>gcr</span><span>.</span><span>io</span><span>/</span><span>google</span><span>_</span><span>containers</span><span>/</span><span>heapster</span><span>-</span><span>amd64</span><span>:</span><span>v1</span><span>.</span><span>4</span><span>.</span><span>2</span></a>
+        imagePullPolicy: IfNotPresent
+        command:
+        - /heapster
+        - <span class="hljs-comment"><span class="hljs-comment">--source=kubernetes.summary_api:''?useServiceAccount=true&amp;kubeletHttps=true&amp;kubeletPort=10250&amp;insecure=true</span></span>
+<span class="hljs-comment"><span class="hljs-comment">---</span></span>
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    task: monitoring
+    # For <span class="hljs-operator"><span class="hljs-keyword"><span class="hljs-operator"><span class="hljs-keyword">use</span></span></span><span class="hljs-operator"> </span><span class="hljs-keyword"><span class="hljs-operator"><span class="hljs-keyword">as</span></span></span><span class="hljs-operator"> a Cluster </span><span class="hljs-keyword"><span class="hljs-operator"><span class="hljs-keyword">add</span></span></span><span class="hljs-operator">-</span><span class="hljs-keyword"><span class="hljs-operator"><span class="hljs-keyword">on</span></span></span><span class="hljs-operator"> (</span><a class="vglnk" href="https://github.com/kubernetes/kubernetes/tree/" rel="nofollow"><span><span class="hljs-operator">https</span></span><span><span class="hljs-operator">://</span></span><span><span class="hljs-operator">github</span></span><span><span class="hljs-operator">.</span></span><span><span class="hljs-operator">com</span></span><span><span class="hljs-operator">/</span></span><span><span class="hljs-operator">kubernetes</span></span><span><span class="hljs-operator">/</span></span><span><span class="hljs-operator">kubernetes</span></span><span><span class="hljs-operator">/</span></span><span><span class="hljs-operator">tree</span></span><span><span class="hljs-operator">/</span></span></a><span class="hljs-keyword"><span class="hljs-operator"><span class="hljs-keyword">master</span></span></span><span class="hljs-operator">/cluster/addons)
+    # </span><span class="hljs-keyword"><span class="hljs-operator"><span class="hljs-keyword">If</span></span></span><span class="hljs-operator"> you </span><span class="hljs-keyword"><span class="hljs-operator"><span class="hljs-keyword">are</span></span></span><span class="hljs-operator"> </span><span class="hljs-keyword"><span class="hljs-operator"><span class="hljs-keyword">NOT</span></span></span><span class="hljs-operator"> </span><span class="hljs-keyword"><span class="hljs-operator"><span class="hljs-keyword">using</span></span></span><span class="hljs-operator"> this </span><span class="hljs-keyword"><span class="hljs-operator"><span class="hljs-keyword">as</span></span></span><span class="hljs-operator"> an addon, you should comment out this line.
+    </span><a class="vglnk" href="http://kubernetes.io/cluster-service" rel="nofollow"><span><span class="hljs-operator">kubernetes</span></span><span><span class="hljs-operator">.</span></span><span><span class="hljs-operator">io</span></span><span><span class="hljs-operator">/</span></span><span><span class="hljs-operator">cluster</span></span><span><span class="hljs-operator">-</span></span><span><span class="hljs-operator">service</span></span></a><span class="hljs-operator">: </span><span class="hljs-string"><span class="hljs-operator"><span class="hljs-string">'true'</span></span></span><span class="hljs-operator">
+    </span><a class="vglnk" href="http://kubernetes.io/name" rel="nofollow"><span><span class="hljs-operator">kubernetes</span></span><span><span class="hljs-operator">.</span></span><span><span class="hljs-operator">io</span></span><span><span class="hljs-operator">/</span></span><span><span class="hljs-operator">name</span></span></a><span class="hljs-operator">: Heapster
+  name: heapster
+  namespace: kube-system
+spec:
+  ports:
+  - port: </span><span class="hljs-number"><span class="hljs-operator"><span class="hljs-number">80</span></span></span><span class="hljs-operator">
+    targetPort: </span><span class="hljs-number"><span class="hljs-operator"><span class="hljs-number">8082</span></span></span><span class="hljs-operator">
+  selector:
+    k8s-app: heapster
+</span><span class="hljs-comment"><span class="hljs-operator"><span class="hljs-comment">---</span></span></span><span class="hljs-operator">
+kind: ClusterRoleBinding
+apiVersion: rbac.</span><span class="hljs-keyword"><span class="hljs-operator"><span class="hljs-keyword">authorization</span></span></span><span class="hljs-operator">.</span><a class="vglnk" href="http://k8s.io/v1beta1" rel="nofollow"><span><span class="hljs-operator">k8s</span></span><span><span class="hljs-operator">.</span></span><span><span class="hljs-operator">io</span></span><span><span class="hljs-operator">/</span></span><span><span class="hljs-operator">v1beta1</span></span></a><span class="hljs-operator">
+metadata:
+  name: heapster
+roleRef:
+  apiGroup: rbac.</span><span class="hljs-keyword"><span class="hljs-operator"><span class="hljs-keyword">authorization</span></span></span><span class="hljs-operator">.k8s.io
+  kind: ClusterRole
+  name: system:heapster
+subjects:
+- kind: ServiceAccount
+  name: heapster
+  namespace: kube-system</span></span></code></pre><p></p>
+
+<p>2- Deploy Heapster.</p>
+
+<p></p><pre><code class="hljs bash">$ kubectl create <span class="hljs-operator"><span class="hljs-operator">-f</span></span> heapster.yaml</code></pre><p></p>
+
+<p>3- Edit the Heapster RBAC role and add the get permission on the nodes statistic at the end.</p>
+
+<p></p><pre><code class="hljs cs">$ kubectl edit clusterrole system:heapster
+...
+- apiGroups:
+  - <span class="hljs-string"><span class="hljs-string">""</span></span>
+  resources:
+  - nodes/stats
+  verbs:
+  - <span class="hljs-keyword"><span class="hljs-keyword">get</span></span></code></pre><p></p>
+
+<h1 id="accessingthekubernetesdashboard">Accessing the Kubernetes dashboard</h1>
+
+<p>1- Create an admin user manifest.</p>
+
+<p></p><pre><code class="hljs makefile">$ vim kubernetes-dashboard-admin.yaml
+apiVersion: v1
+kind: ServiceAccount
+<span class="hljs-title"><span class="hljs-title">metadata:</span></span>
+  name: admin-user
+  namespace: kube-system
+---
+apiVersion: <a class="vglnk" href="http://rbac.authorization.k8s.io/v1beta1" rel="nofollow"><span>rbac</span><span>.</span><span>authorization</span><span>.</span><span>k8s</span><span>.</span><span>io</span><span>/</span><span>v1beta1</span></a>
+kind: ClusterRoleBinding
+<span class="hljs-title"><span class="hljs-title">metadata:</span></span>
+  name: admin-user
+<span class="hljs-title"><span class="hljs-title">roleRef:</span></span>
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: cluster-admin
+<span class="hljs-title"><span class="hljs-title">subjects:</span></span>
+- kind: ServiceAccount
+  name: admin-user
+  namespace: kube-system</code></pre><p></p>
+
+<p>2- Create the admin user.</p>
+
+<p></p><pre><code class="hljs bash">$ kubectl create <span class="hljs-operator"><span class="hljs-operator">-f</span></span> kubernetes-dashboard-admin.yaml</code></pre><p></p>
+
+<p>3- Get the admin user token.</p>
+
+<p></p><pre><code class="hljs perl">$ kubectl -n kube-<span class="hljs-keyword"><span class="hljs-keyword">system</span></span> describe secret <span class="hljs-variable"><span class="hljs-variable">$(</span></span>kubectl -n kube-<span class="hljs-keyword"><span class="hljs-keyword">system</span></span> get secret | <span class="hljs-keyword"><span class="hljs-keyword">grep</span></span> admin-user | awk <span class="hljs-string"><span class="hljs-string">'{print $1}'</span></span>)</code></pre><p></p>
+
+<p>4- Copy the token.</p>
+
+<p>5- Start the proxy to access the dashboard.</p>
+
+<p></p><pre><code class="hljs ruby"><span class="hljs-variable"><span class="hljs-variable">$ </span></span>kubectl proxy</code></pre><p></p>
+
+<p>6- Browse to <a href="http://localhost:8001/api/v1/namespaces/kube-system/services/https:kubernetes-dashboard:/proxy">http://localhost:8001/api/v1/namespaces/kube-system/services/https:kubernetes-dashboard:/proxy</a>.</p>
+
+<p>7- Select Token and paste the token from step 4.</p>
+
+<p><img src="./Install and configure a multi-master Kubernetes cluster with kubeadm_files/Screenshot_2017-12-28_15-45-49.png" alt="kubernetes dashboard"></p>
+
+<p><img src="./Install and configure a multi-master Kubernetes cluster with kubeadm_files/Screenshot_2017-12-28_15-46-27.png" alt="kubernetes dashboard"></p></div>
+        </section>
+
+        <footer class="post-footer row">
+            <div class="small-12 columns">
+                <section class="post-tags">
+                    Tags: <a href="https://blog.inkubate.io/tag/cloud/">Cloud</a>, <a href="https://blog.inkubate.io/tag/kubernetes/">Kubernetes</a>, <a href="https://blog.inkubate.io/tag/container/">Container</a>, <a href="https://blog.inkubate.io/tag/kubeadm/">Kubeadm</a>
+                </section>
+
+                <section class="share">
+                    <h5>Share this post:</h5>
+                    <a class="icon-twitter" href="https://twitter.com/share?text=Install%20and%20configure%20a%20multi-master%20Kubernetes%20cluster%20with%20kubeadm&amp;url=https://blog.inkubate.io/install-and-configure-a-multi-master-kubernetes-cluster-with-kubeadm/" onclick="window.open(this.href, &#39;twitter-share&#39;, &#39;width=550,height=235&#39;);return false;">
+                        <span class="hidden"><i class="fa fa-twitter-square"></i></span>
+                    </a>
+                    <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=https://blog.inkubate.io/install-and-configure-a-multi-master-kubernetes-cluster-with-kubeadm/" onclick="window.open(this.href, &#39;facebook-share&#39;,&#39;width=580,height=296&#39;);return false;">
+                        <span class="hidden"><i class="fa fa-facebook-square"></i></span>
+                    </a>
+                    <a class="icon-google-plus" href="https://plus.google.com/share?url=https://blog.inkubate.io/install-and-configure-a-multi-master-kubernetes-cluster-with-kubeadm/" onclick="window.open(this.href, &#39;google-plus-share&#39;, &#39;width=490,height=530&#39;);return false;">
+                        <span class="hidden"><i class="fa fa-google-plus-square"></i></span>
+                    </a>
+                </section>
+            </div>
+        </footer>
+
+        <div class="row post-prev-next-pagination">
+            <div class="prev small-6 columns text-left">
+                    <div class="prev-next-label">
+                        <a href="https://blog.inkubate.io/install-powershell-and-powercli-on-ubuntu-16-04/">
+                            <i class="fa fa-angle-double-left"></i> Previous
+                        </a>
+                    </div>
+                    <a href="https://blog.inkubate.io/install-powershell-and-powercli-on-ubuntu-16-04/" class="title">
+                        Install Powershell and PowerCLI on Ubuntu 16.04
+                    </a>
+            </div>
+            <div class="next small-6 columns text-right">
+                    <div class="prev-next-label">
+                        <a href="https://blog.inkubate.io/use-vsphere-storage-as-kubernetes-persistant-volumes/">
+                            Next <i class="fa fa-angle-double-right"></i>
+                        </a>
+                    </div>
+                    <a href="https://blog.inkubate.io/use-vsphere-storage-as-kubernetes-persistant-volumes/" class="title">
+                        Use vSphere Storage as Kubernetes persistent volumes
+                    </a>
+            </div>
+        </div>
+
+            <section class="author-info">
+                <div class="row">
+                    <section class="post-author small-12 columns">
+                            <img src="./Install and configure a multi-master Kubernetes cluster with kubeadm_files/ece26467aaa052f1f8c46ee85e441488.jpeg" class="post-author-avatar" alt="Simon Guyennet">
+                            <span class="author-label">Author</span>
+                            <h1><a href="https://blog.inkubate.io/author/simon/" class="author-link-name">Simon Guyennet</a></h1>
+                    </section>
+                </div>
+            </section>
+
+        <section class="disqus">
+            <section class="disqus">
+    <div class="row">
+        <div class="small-12 columns">
+            <h1 class="comments-header">Comments</h1>
+            <div id="disqus_thread"><iframe id="dsq-app9176" name="dsq-app9176" allowtransparency="true" frameborder="0" scrolling="no" tabindex="0" title="Disqus" width="100%" src="./Install and configure a multi-master Kubernetes cluster with kubeadm_files/saved_resource.html" style="width: 1px !important; min-width: 100% !important; border: none !important; overflow: hidden !important; height: 75px !important;" horizontalscrolling="no" verticalscrolling="no"></iframe></div>
+            <script type="text/javascript">
+                /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+                var disqus_shortname = 'blog-inkubate-io'; // required: replace example with your forum shortname
+
+                /* * * DON'T EDIT BELOW THIS LINE * * */
+                (function() {
+                    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                })();
+            </script>
+            <noscript>Please enable JavaScript to view the <a href="<a class="vglnk" href="http://disqus.com/?ref_noscript" rel="nofollow"><span>http</span><span>://</span><span>disqus</span><span>.</span><span>com</span><span>/?</span><span>ref</span><span>_</span><span>noscript</span></a>">comments powered by Disqus.</a></noscript>
+            
+        </div>
+    </div>
+</section>
+        </section>
+
+    </article>
+
+</main><iframe style="display: none;" src="./Install and configure a multi-master Kubernetes cluster with kubeadm_files/saved_resource(1).html"></iframe>
+
+
+
+    <footer class="site-footer">
+        <section class="poweredby ghost">
+          <i class="fa fa-creative-commons"></i> Creative Commons
+        </section>
+</footer>
+
+    <div class="tborder"></div>
+    <div class="rborder"></div>
+    <div class="bborder"></div>
+    <div class="lborder"></div>
+
+    <div class="back-to-top js-back-to-top-btn">
+        <i class="fa fa-angle-up"></i>
+    </div>
+
+        <div class="main-menu-ovrl main-menu-ovrl-hugeinc js-main-menu-ovrl">
+    <i class="fa fa-times main-menu-ovrl-close js-main-menu-close"></i>
+    <nav>
+        <ul>
+                <li>
+                    <a href="https://blog.inkubate.io/">Home</a>
+                </li>
+                <li>
+                    <a href="https://blog.inkubate.io/tag/vmware/">VMware</a>
+                </li>
+                <li>
+                    <a href="https://blog.inkubate.io/tag/kubernetes/">Kubernetes</a>
+                </li>
+                <li>
+                    <a href="https://blog.inkubate.io/tag/docker/">Docker</a>
+                </li>
+                <li>
+                    <a href="https://blog.inkubate.io/tag/openstack/">OpenStack</a>
+                </li>
+                <li>
+                    <a href="https://blog.inkubate.io/tag/unikernel/">Unikernel</a>
+                </li>
+        </ul>
+    </nav>
+</div>
+
+    
+
+    <script type="text/javascript" src="./Install and configure a multi-master Kubernetes cluster with kubeadm_files/jquery-2.1.4.min.js"></script>
+    <script type="text/javascript" src="./Install and configure a multi-master Kubernetes cluster with kubeadm_files/foundation.min.js"></script>
+    <script type="text/javascript" src="./Install and configure a multi-master Kubernetes cluster with kubeadm_files/background-check.js"></script>
+    <script type="text/javascript" src="./Install and configure a multi-master Kubernetes cluster with kubeadm_files/smoothscroll.js"></script>
+    <script src="./Install and configure a multi-master Kubernetes cluster with kubeadm_files/highlight.min.js"></script>
+    <script type="text/javascript" src="./Install and configure a multi-master Kubernetes cluster with kubeadm_files/abc.js"></script>
+    <script type="text/javascript" src="./Install and configure a multi-master Kubernetes cluster with kubeadm_files/imagesloaded.js"></script>
+    <script type="text/javascript" src="./Install and configure a multi-master Kubernetes cluster with kubeadm_files/reading-time.js"></script>
+    <script type="text/javascript" src="./Install and configure a multi-master Kubernetes cluster with kubeadm_files/jcw.js"></script>
+
+
+<iframe style="display: none;" src="./Install and configure a multi-master Kubernetes cluster with kubeadm_files/saved_resource(2).html"></iframe></body></html>

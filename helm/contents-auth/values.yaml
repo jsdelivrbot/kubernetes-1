@@ -1,0 +1,80 @@
+replicaCount: 2
+keepSecrets: false
+
+#VolumeMounts:
+#  vhosts: /smileserv/vhosts
+#  vhostsname: vhosts
+#  pub: /smileserv/pub
+#  pubname: pub
+#  logs: /usr/local/nginx/logs
+#  logsname: logs
+
+init:
+  clone:
+    release: false
+  flush:
+    enabled: false
+
+nginxauth:
+  name: nginxauth
+  enabled: enable
+  registry: docker.io
+  repository: insecure0/smileserv
+  tag: nginx-auth
+  #pullPolicy: IfNotPresent
+  pullPolicy: Always
+  pullSecret:
+  copyRoot: false
+  persistentSubpaths: false
+  resources: false
+  #requests:
+  #  cpu: 1m
+  #  memory: 1Mi
+ 
+phpfpm:
+  name: phpfpm
+  enabled: enable
+  registry: docker.io
+  repository: insecure0/smileserv
+  tag: php-fpm
+  pullPolicy: Always
+  #pullPolicy: IfNotPresent
+  pullSecret:
+  resources: false
+  #requests:
+  #  cpu: 1m
+  #  memory: 1Mi
+
+#persistence:
+#  enabled: false
+#  keep: false
+#  accessMode: ReadWriteOnce
+#  size: 100Gi
+
+ingress:
+  enabled: false
+
+#service:
+#  namespace: default
+#  type: NodePort
+#  nodeport: 30001
+#  port: 80
+#  targetport: 80
+#  protocol: TCP
+livenessProbe:
+  initialDelaySeconds: 30
+  periodSeconds: 10
+  timeoutSeconds: 5
+  successThreshold: 1
+  failureThreshold: 3
+
+readinessProbe:
+  initialDelaySeconds: 5
+  periodSeconds: 10
+  timeoutSeconds: 1
+  successThreshold: 1
+  failureThreshold: 3
+
+#vhost:
+#   domain1: lb1.smilecst.com
+#   domain2: lb2.smilecst.com
