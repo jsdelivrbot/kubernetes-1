@@ -15,12 +15,12 @@ init:
   flush:
     enabled: false
 
-nginxauth:
-  name: nginxauth
+nginxcache:
+  name: nginxcache
   enabled: enable
   registry: docker.io
   repository: insecure0/smileserv
-  tag: nginx-auth
+  tag: nginx-cache
   #pullPolicy: IfNotPresent
   pullPolicy: Always
   pullSecret:
@@ -61,15 +61,16 @@ ingress:
 #  port: 80
 #  targetport: 80
 #  protocol: TCP
+
 livenessProbe:
-  initialDelaySeconds: 35
+  initialDelaySeconds: 25
   periodSeconds: 5
   timeoutSeconds: 5
   successThreshold: 1
   failureThreshold: 2
 
 readinessProbe:
-  initialDelaySeconds: 25
+  initialDelaySeconds: 18
   periodSeconds: 5
   timeoutSeconds: 2
   successThreshold: 1

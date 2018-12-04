@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: contents-auth-vhosts
+  name: sl-cache-vhosts
   labels:
     app: "{{ .Release.Name }}"
     release: "{{ .Release.Name }}"

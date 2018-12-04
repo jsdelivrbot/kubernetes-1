@@ -23,19 +23,19 @@ spec:
   - name: http
     port: 80
     targetPort: 80
-    nodePort: 30011
+    nodePort: 30021
     protocol: TCP
 
   - name: https
     port: 443
     targetPort: 443
-    nodePort: 30012
+    nodePort: 30022
     protocol: TCP
 
   - name: rtmp
     port: 1935
     targetPort: 1935
-    nodePort: 30013
+    nodePort: 30023
     protocol: TCP
 
   selector:

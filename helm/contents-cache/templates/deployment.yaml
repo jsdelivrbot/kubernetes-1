@@ -31,14 +31,14 @@ spec:
   #    maxUnavailable: 1
     type: RollingUpdate
     spec:
-      #{{- if .Values.nginxauth.pullSecret }}    
+      #{{- if .Values.nginxcache.pullSecret }}    
       #      imagePullSecrets:
-      #        - name: "{{ .Values.nginxauth.pullSecret }}"
+      #        - name: "{{ .Values.nginxcache.pullSecret }}"
       #{{- end }}          
       containers:
-      - name: {{ .Values.nginxauth.name }}
-        image: {{ .Values.nginxauth.registry }}/{{ .Values.nginxauth.repository }}:{{ .Values.nginxauth.tag }}
-        imagePullPolicy: {{ .Values.nginxauth.pullPolicy }}
+      - name: {{ .Values.nginxcache.name }}
+        image: {{ .Values.nginxcache.registry }}/{{ .Values.nginxcache.repository }}:{{ .Values.nginxcache.tag }}
+        imagePullPolicy: {{ .Values.nginxcache.pullPolicy }}
         resources: {}
         #terminationMessagePath: /dev/termination-log
         #terminationMessagePolicy: File
@@ -55,7 +55,7 @@ spec:
 
         volumeMounts:
         - mountPath: /smileserv/vhosts
-          name: contents-auth-vhosts
+          name: vhosts
         - mountPath: /var/log/nginx
           name: logs
         - mountPath: /smileserv/pub-html
@@ -64,7 +64,7 @@ spec:
         lifecycle:
           postStart:
             exec:
-              command: ["/bin/sh", "-c", "echo nameserver 10.96.0.10 > /etc/resolv.conf && echo search default.svc.cluster.local svc.cluster.local cluster.local >> /etc/resolv.conf && echo options ndots:2 >> /etc/resolv.conf && rm -rf /smileserv/scripts && /usr/bin/git clone https://github.com/smileserv/scripts /smileserv/scripts && chmod -R 700 /smileserv/scripts && sh /smileserv/scripts/init_auth.sh"]
+              command: ["/bin/sh", "-c", "echo nameserver 10.96.0.10 > /etc/resolv.conf && echo search default.svc.cluster.local svc.cluster.local cluster.local >> /etc/resolv.conf && echo options ndots:2 >> /etc/resolv.conf && rm -rf /smileserv/scripts && /usr/bin/git clone https://github.com/smileserv/scripts /smileserv/scripts && chmod -R 700 /smileserv/scripts && sh /smileserv/scripts/init_cache.sh"]
           #preStop:
           #  exec:
           #    command: ["exit"]
@@ -101,9 +101,9 @@ spec:
           name: pub-html
 
       volumes:
-      - name: contents-auth-vhosts
+      - name: vhosts
         configMap:
-          name: contents-auth-vhosts
+          name: vhosts
           #items:
           #  - key: source.conf
           #    path: source.conf
