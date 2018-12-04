@@ -31,20 +31,6 @@ nginxcache:
   #  cpu: 1m
   #  memory: 1Mi
  
-phpfpm:
-  name: phpfpm
-  enabled: enable
-  registry: docker.io
-  repository: insecure0/smileserv
-  tag: php-fpm
-  pullPolicy: Always
-  #pullPolicy: IfNotPresent
-  pullSecret:
-  resources: false
-  #requests:
-  #  cpu: 1m
-  #  memory: 1Mi
-
 #persistence:
 #  enabled: false
 #  keep: false
